@@ -125,7 +125,7 @@ public class ClientStuCourseFrame extends JFrame implements ActionListener {
 
         //透明化处理
         jtb1.setForeground(Color.BLACK);
-        jtb1.setFont(new Font("Serif", Font.BOLD, 28));
+        jtb1.setFont(new Font("Serif", Font.BOLD, 24));
         jtb1.setRowHeight(40);                //表格行高
         jtb1.setPreferredScrollableViewportSize(new Dimension(850, 500));
         jtb1.setAutoResizeMode(JTable.AUTO_RESIZE_SUBSEQUENT_COLUMNS);
@@ -237,7 +237,7 @@ public class ClientStuCourseFrame extends JFrame implements ActionListener {
 
         //透明化处理
         jtb1.setForeground(Color.BLACK);
-        jtb1.setFont(new Font("Serif", Font.BOLD, 28));
+        jtb1.setFont(new Font("Serif", Font.BOLD, 24));
         jtb1.setRowHeight(40);                //表格行高
         jtb1.setPreferredScrollableViewportSize(new Dimension(850, 500));
         jtb1.setAutoResizeMode(JTable.AUTO_RESIZE_SUBSEQUENT_COLUMNS);
@@ -391,7 +391,7 @@ public class ClientStuCourseFrame extends JFrame implements ActionListener {
 
                 //透明化处理
                 jtb1.setForeground(Color.BLACK);
-                jtb1.setFont(new Font("Serif", Font.BOLD, 28));
+                jtb1.setFont(new Font("Serif", Font.BOLD, 24));
                 jtb1.setRowHeight(40);                //表格行高
                 jtb1.setPreferredScrollableViewportSize(new Dimension(850, 500));
                 jtb1.setAutoResizeMode(JTable.AUTO_RESIZE_SUBSEQUENT_COLUMNS);
