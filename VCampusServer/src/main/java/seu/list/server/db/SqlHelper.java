@@ -136,6 +136,7 @@ public class SqlHelper {
         }
         return courses;
     }
+
     public List<Chat> sqlChatQuery(String sql, String[] paras) {
         // TODO Auto-generated method stub
         PreparedStatement ps = null;
@@ -272,7 +273,7 @@ public class SqlHelper {
                 e.printStackTrace();
             }
         }
-        if(courses!=null&&courses.size()>=1)
+        if (courses != null && courses.size() >= 1)
             return true;
         return false;
     }

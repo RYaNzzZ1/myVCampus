@@ -6,6 +6,7 @@ import seu.list.common.MessageType;
 import seu.list.common.User;
 import seu.list.server.db.SqlHelper;
 
+import java.sql.SQLException;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -23,7 +24,7 @@ public class CourseServer {
         this.mesFromClient = mesFromClient;
     }
 
-    public void execute() {
+    public void execute() throws SQLException, ClassNotFoundException {
 
         switch (this.mesFromClient.getMessageType()) {
             case MessageType.REQ_STU_ADD_LESSON: {
@@ -38,35 +39,34 @@ public class CourseServer {
                     this.mesToClient.setSeccess(false);
                     this.mesToClient.setErrorMessage("Null");
                     break;
-                }
-                else {
+                } else {
                     //String CourseId = this.mesFromClient.getContent().get(0);
                     String UserId = this.mesFromClient.getContent().get(1);
-                    boolean conflict = this.isconfilt(UserId,course.getCourseDate(),course.getCoursePeriod());
+                    boolean conflict = this.isconfilt(UserId, course.getCourseDate(), course.getCoursePeriod());
                     boolean chose = false;
-                    if(conflict==false) {
+                    if (!conflict) {
                         List<Course> allCourse; //= new LinkedList<Course>();
                         User user = new User();
                         user.setId(UserId);
                         allCourse = user.getCourses();
-                        String prefix = CourseId.substring(0,5);
-                        for(int i=0;i<allCourse.size();i++){
+                        String prefix = CourseId.substring(0, 5);
+                        for (int i = 0; i < allCourse.size(); i++) {
                             String cid = allCourse.get(i).getCourseID();
-                            if(cid.contains(prefix)) {
+                            if (cid.contains(prefix)) {
                                 conflict = true;
-                                if(cid.equals(CourseId))
-                                    chose=true;
+                                if (cid.equals(CourseId))
+                                    chose = true;
                                 break;
                             }
                         }
-                        if(conflict==false) {
+                        if (!conflict) {
                             this.mesToClient.setSeccess(this.sigAddCourse(CourseId, UserId));
                             break;
                         }
                     }
                     this.mesToClient.setSeccess(false);
                     this.mesToClient.setErrorMessage("Course conflict.");
-                    if(chose)
+                    if (chose)
                         this.mesToClient.setErrorMessage("Chose");
                 }
                 System.out.println("REQ_STU_ADD_LESSON finished");
@@ -83,17 +83,16 @@ public class CourseServer {
                 user.setId(String.valueOf(this.mesFromClient.getData()));
                 allCourse = user.getCourses();
                 boolean f = false;
-                for(int i=0;i<allCourse.size();i++){
-                    if(allCourse.get(i).getCourseID()==CourseId) {
+                for (int i = 0; i < allCourse.size(); i++) {
+                    if (allCourse.get(i).getCourseID().equals(CourseId)) {
                         f = true;
                         break;
                     }
                 }
-                if(f=false){
+                if (!f) {
                     this.mesToClient.setSeccess(false);
                     this.mesToClient.setErrorMessage("Invalid operation");
-                }
-                else {
+                } else {
                     this.mesToClient.setSeccess(this.sigRemoveCourse(CourseId, UserId));
                     System.out.println("REQ_STU_REMOVE_LESSON finshed");
                 }
@@ -167,10 +166,11 @@ public class CourseServer {
                 User user = new User();
                 user.setId(String.valueOf(this.mesFromClient.getData()));
                 allCourse = user.getCourses();
+                System.out.println("课程表的allcourse：" + allCourse);
                 for (Course course : allCourse) {
                     sigCourseContent = course.getContent();
                     if (sigCourseContent != null)
-                        for (int i = 0; i <= 6; i++) {
+                        for (int i = 0; i <= 7; i++) {
                             allCourseContent.add(sigCourseContent.get(i));
                         }
 
@@ -203,15 +203,15 @@ public class CourseServer {
             return null;
     }
 
-    public boolean isconfilt(String uID,String week,String period){
+    public boolean isconfilt(String uID, String week, String period) {
         String sql = "select * from tb_stc where uID = ? and week = ? and period = ?";
-        String[]paras = new String[3];
-        paras[0]=uID;
-        paras[1]=week;
-        paras[2]=period;
-        boolean flag = new SqlHelper().sqlConflictCheck(sql,paras);
-        return flag;
+        String[] paras = new String[3];
+        paras[0] = uID;
+        paras[1] = week;
+        paras[2] = period;
+        return new SqlHelper().sqlConflictCheck(sql, paras);
     }
+
     public List<Course> getAllCourse() {
         // TODO Auto-generated method stub
         String sql = "select * from tb_Class";

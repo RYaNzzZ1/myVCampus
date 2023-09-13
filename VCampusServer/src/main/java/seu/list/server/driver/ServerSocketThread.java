@@ -116,7 +116,7 @@ public class ServerSocketThread extends Thread {
      * @see ModuleType
      * @see seu.list.server.dao
      */
-    public Message processMes(Message message) throws SQLException {
+    public Message processMes(Message message) throws SQLException, ClassNotFoundException {
         Message serverResponse = null;
         switch (message.getModuleType()) {
             case ModuleType.User: {// 用户管理模块

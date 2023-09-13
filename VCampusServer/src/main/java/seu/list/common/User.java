@@ -1,9 +1,9 @@
 package seu.list.common;
 
 
-import seu.list.server.dao.CourseServer;
 import seu.list.server.db.SqlHelper;
 
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
@@ -206,14 +206,29 @@ public class User implements java.io.Serializable {
     /**
      * @return 用户已选课程
      */
-    public List<Course> getCourses() {
-        String sql = "select * from tb_Stc where uID = ?";
-        List<String> courseIDset = new SqlHelper().sqlRelationQuery(sql, new String[]{id});
-        List<Course> cList = new ArrayList<Course>();
-        for (String cID : courseIDset) {
-            cList.add(new CourseServer().searchCourseByID(cID));
+    public List<Course> getCourses() throws ClassNotFoundException, SQLException {
+        Statement s;
+        Connection con = null;
+        ResultSet rs1;
+        ResultSet rs2;
+
+        Class.forName("net.ucanaccess.jdbc.UcanaccessDriver");
+        String dbpath = "vCampus.accdb";
+        String url = "jdbc:ucanaccess://" + dbpath;
+        con = DriverManager.getConnection(url, "", "");
+        s = con.createStatement();
+        rs1 = s.executeQuery("select * from tb_Stc where uID ='" + id + "'");
+        List<Course> cID = new ArrayList<>();
+        while (rs1.next()) {
+            String str = rs1.getString(3);
+            System.out.println("rs1.getString(3);" + str);
+            rs2 = s.executeQuery("select * from tb_Class where cID='" + str + "'");
+            rs2.next();
+            cID.add(new Course(rs2.getString(1), rs2.getString(2), rs2.getString(3),
+                    rs2.getString(4), rs2.getString(5), rs2.getString(6)
+                    , rs2.getString(7), rs2.getString(8)));
         }
-        return cList;
+        return cID;
     }
 
 

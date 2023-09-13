@@ -14,6 +14,17 @@ public class Course implements Serializable {
     private String CourseDate;
     private String CoursePeriod;
 
+    public Course(String courseID, String semester, String courseName, String courseMajor, String teacherID, String courseType, String courseDate, String coursePeriod) {
+        Semester = semester;
+        CourseID = courseID;
+        CourseMajor = courseMajor;
+        CourseName = courseName;
+        this.teacherID = teacherID;
+        CourseType = courseType;
+        CourseDate = courseDate;
+        CoursePeriod = coursePeriod;
+    }
+
     /**
      * 无参构造器
      */
