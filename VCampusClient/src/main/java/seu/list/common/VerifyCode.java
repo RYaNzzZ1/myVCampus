@@ -45,10 +45,11 @@ public class VerifyCode extends JComponent implements MouseListener {
             min = 255;
         if (max > 255)
             max = 255;
-        int red = random.nextInt(max - min) + min;
-        int green = random.nextInt(max - min) + min;
-        int blue = random.nextInt(max - min) + min;
-        return new Color(red, green, blue);
+        int r = random.nextInt(max - min) + min;
+        int g = random.nextInt(max - min) + min;
+        int b = random.nextInt(max - min) + min;
+
+        return new Color(r, g, b);
     }
 
     //设置验证码具体的数字或字母
@@ -74,14 +75,14 @@ public class VerifyCode extends JComponent implements MouseListener {
         width = this.codesLength * 16 + (this.codesLength - 1) * 10;
         super.setSize(width, height);  //接口使用，验证码字体大小
         super.setPreferredSize(new Dimension(width, height));//接口使用，验证码背景大小
-        Font mFont = new Font("Arial", Font.BOLD | Font.ITALIC, 25);  //设置字体和字体大小
+        Font mFont = new Font("Serif", Font.BOLD | Font.ITALIC, 25);  //设置字体和字体大小
         g.setFont(mFont);  //设置对象
 
         //绘制出验证码的背景的矩形轮廓
         Graphics2D g2d = (Graphics2D) g;
-        g2d.setColor(getRandColor(200, 250));
+        g2d.setColor(getRandColor(10, 120));
         g2d.fillRect(0, 0, width, height);
-        g2d.setColor(getRandColor(180, 200));
+        g2d.setColor(getRandColor(30, 150));
         g2d.drawRect(0, 0, width - 1, height - 1);
 
         //绘制出验证码背景的线
@@ -91,7 +92,7 @@ public class VerifyCode extends JComponent implements MouseListener {
             int y = random.nextInt(height - 1);
             int x1 = random.nextInt(width - 10) + 10;
             int y1 = random.nextInt(height - 4) + 4;
-            g2d.setColor(getRandColor(180, 200));
+            g2d.setColor(getRandColor(70, 90));
             g2d.drawLine(x, y, x1, y1);
         }
 
@@ -103,7 +104,7 @@ public class VerifyCode extends JComponent implements MouseListener {
         for (; i < len; i++) {
             int b = random.nextBoolean() ? 1 : -1;
             g2d.rotate(random.nextInt(10) * 0.01 * b);
-            g2d.setColor(getRandColor(20, 130));
+            g2d.setColor(getRandColor(150, 250));
             g2d.drawString(codes.charAt(i) + "", 16 * i + 10, base);
         }
     }
