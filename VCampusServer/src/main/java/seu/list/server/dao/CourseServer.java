@@ -161,7 +161,7 @@ public class CourseServer {
                             allCourseContent.add(sigCourseContent.get(i));
                         }
                 }
-                this.mesToClient.setData(allCourseContent);
+                this.mesToClient.setContent(allCourseContent);
                 System.out.println("REQ_STU_ALL_CHOOOSE finished");
                 break;
             }
