@@ -54,7 +54,7 @@ public class Shop_StudentFrame {
         frame = new JFrame();
         frame.setBounds(100, 100, 800, 532);
         //设置背景图片
-        JLabel backgroundImageLabel = new JLabel(new ImageIcon("VCampusClient/src/main/resources/Shop_StudentFrame.PNG"));
+        JLabel backgroundImageLabel = new JLabel(new ImageIcon(getClass().getClassLoader().getResource("imgs/Shop_StudentFrame.png")));
         Toolkit k = Toolkit.getDefaultToolkit();
         Dimension d = k.getScreenSize();
         frame.setBounds(d.width / 2 - 640, d.height / 2 - 360, 1280, 720);

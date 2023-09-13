@@ -10,31 +10,31 @@ public class Course implements Serializable {
     private String CourseMajor;
     private String CourseName;
     private String teacherID;
-    private String CourseState;
     private String CourseType;
+    private String CourseDate;
+    private String CoursePeriod;
+
+    /**
+     * 无参构造器
+     */
 
     public Course() {
     }
 
-    /**
-     * 构造函数
-     *
-     * @param semester    授课学期
-     * @param courseID    课程编号
-     * @param courseMajor 专业
-     * @param courseName  课程名称
-     * @param teacherID   授课教师
-     * @param courseState 课程状态
-     * @param courseType  课程类型
-     */
-    public Course(String semester, String courseID, String courseMajor, String courseName, String teacherID, String courseState, String courseType) {
-        Semester = semester;
-        CourseID = courseID;
-        CourseMajor = courseMajor;
-        CourseName = courseName;
-        this.teacherID = teacherID;
-        CourseState = courseState;
-        CourseType = courseType;
+    public String getCourseDate() {
+        return CourseDate;
+    }
+
+    public void setCourseDate(String courseDate) {
+        CourseDate = courseDate;
+    }
+
+    public String getCoursePeriod() {
+        return CoursePeriod;
+    }
+
+    public void setCoursePeriod(String coursePeriod) {
+        CoursePeriod = coursePeriod;
     }
 
     /**
@@ -65,42 +65,68 @@ public class Course implements Serializable {
         CourseID = courseID;
     }
 
+    /**
+     * @return 专业
+     */
     public String getCourseMajor() {
         return CourseMajor;
     }
 
+    /**
+     * @param courseMajor 专业
+     */
     public void setCourseMajor(String courseMajor) {
         CourseMajor = courseMajor;
     }
 
+    /**
+     * @return 课程名称
+     */
     public String getCourseName() {
         return CourseName;
     }
 
+    /**
+     * @param courseName 课程名称
+     */
     public void setCourseName(String courseName) {
         CourseName = courseName;
     }
 
+    /**
+     * @return 授课教师
+     */
     public String getTeacherID() {
         return teacherID;
     }
 
+    /**
+     * @param teacherID 授课教师
+     */
     public void setTeacherID(String teacherID) {
         this.teacherID = teacherID;
     }
 
-    public String getCourseState() {
-        return CourseState;
-    }
+    /**
+     * @return 课程状态
+     */
 
-    public void setCourseState(String courseState) {
-        CourseState = courseState;
-    }
 
+    /**
+     * @param courseState 课程状态
+     */
+
+
+    /**
+     * @return 课程类型
+     */
     public String getCourseType() {
         return CourseType;
     }
 
+    /**
+     * @param courseType 课程类型
+     */
     public void setCourseType(String courseType) {
         CourseType = courseType;
     }
@@ -113,11 +139,13 @@ public class Course implements Serializable {
                 ", CourseMajor='" + CourseMajor + '\'' +
                 ", CourseName='" + CourseName + '\'' +
                 ", teacherID='" + teacherID + '\'' +
-                ", CourseState='" + CourseState + '\'' +
                 ", CourseType='" + CourseType + '\'' +
                 '}';
     }
 
+    /**
+     * @return 课程信息（授课学期，课程编号，专业，课程名称，授课教师，课程状态，课程类型)
+     */
     public Vector<String> getContent() {
         Vector<String> courseContents = new Vector<String>();
         courseContents.add(Semester);
@@ -125,18 +153,23 @@ public class Course implements Serializable {
         courseContents.add(CourseMajor);
         courseContents.add(CourseName);
         courseContents.add(teacherID);
-        courseContents.add(CourseState);
         courseContents.add(CourseType);
+        courseContents.add(CourseDate);
+        courseContents.add(CoursePeriod);
         return courseContents;
     }
 
+    /**
+     * @param content 课程信息
+     */
     public void setContent(Vector<String> content) {
         Semester = content.get(0);
         CourseID = content.get(1);
         CourseMajor = content.get(2);
         CourseName = content.get(3);
         teacherID = content.get(4);
-        CourseState = content.get(5);
-        CourseType = content.get(6);
+        CourseType = content.get(5);
+        CourseDate = content.get(6);
+        CoursePeriod = content.get(7);
     }
 }

@@ -35,36 +35,62 @@ public class CourseInfor extends JDialog implements ActionListener {
         JLabel backgroundImageLabel = new JLabel(new ImageIcon(getClass().getClassLoader().getResource("imgs/CourseInfor.png")));
         Toolkit k = Toolkit.getDefaultToolkit();
         Dimension d = k.getScreenSize();
-        setBounds(d.width / 2 - 846 / 2, d.height / 2 - 589 / 2, 846, 610);
-        backgroundImageLabel.setBounds(0, 0, 846, 589);
+        setBounds(d.width / 2 - 844 / 2, d.height / 2 - 650 / 2, 844, 650);
+        backgroundImageLabel.setBounds(0, 0, 844, 650);
         setResizable(false);
         setLayout(null);
-
-        //2.绘制退出按钮
-        //得到鼠标的坐标（用于推算对话框应该摆放的坐标)
-     /*backgroundImageLabel.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-				int x = e.getX();
-				int y = e.getY();
-				System.out.println("鼠标点击位置：X=" + x + ", Y=" + y);
-			}
-        });*/
-
 
         setTitle("添加课程");
         Font f = new Font("华文楷体", Font.BOLD, 36);
 
+        JComboBox modifyt1 = new JComboBox<>();
+        modifyt1.setModel(new DefaultComboBoxModel(new String[]{"周一", "周二", "周三", "周四", "周五"}));
+        modifyt1.setFont(new Font("华文行楷", Font.PLAIN, 24));
+        modifyt1.setBounds(502, 305, 110, 43);
+        add(modifyt1);
+        modifyt1.setOpaque(false);
+        modifyt1.setBorder(new EmptyBorder(0, 0, 0, 0));
+        modifyt1.setRenderer(new DefaultListCellRenderer() {
+            private static final long serialVersionUID = 1L;
+
+            public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected,
+                                                          boolean cellHasFocus) {
+                JComponent result = (JComponent) super.getListCellRendererComponent(list, value, index, isSelected,
+                        cellHasFocus);
+                result.setOpaque(false);
+                return result;
+            }
+        });
+
+        JComboBox modifyt2 = new JComboBox<>();
+        modifyt2.setModel(new DefaultComboBoxModel(new String[]{"1-2节", "3-4节", "5-6节", "7-8节"}));
+        modifyt2.setFont(new Font("华文行楷", Font.PLAIN, 24));
+        modifyt2.setBounds(633, 305, 110, 43);
+        add(modifyt2);
+        modifyt2.setOpaque(false);
+        modifyt2.setBorder(new EmptyBorder(0, 0, 0, 0));
+        modifyt2.setRenderer(new DefaultListCellRenderer() {
+            private static final long serialVersionUID = 1L;
+
+            public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected,
+                                                          boolean cellHasFocus) {
+                JComponent result = (JComponent) super.getListCellRendererComponent(list, value, index, isSelected,
+                        cellHasFocus);
+                result.setOpaque(false);
+                return result;
+            }
+        });
+
         CourseID = new JTextField();
         CourseID.setFont(f);
-        CourseID.setBounds(168, 133, 407 - 168, 175 - 133);
+        CourseID.setBounds(166, 136, 241, 43);
         add(CourseID);
         CourseID.setOpaque(false);
         CourseID.setBorder(new EmptyBorder(0, 0, 0, 0));
 
         CourseName = new JTextField();
         CourseName.setFont(f);
-        CourseName.setBounds(504, 133, 407 - 168, 175 - 133);
+        CourseName.setBounds(502, 136, 241, 43);
         add(CourseName);
         CourseName.setOpaque(false);
         CourseName.setBorder(new EmptyBorder(0, 0, 0, 0));
@@ -72,7 +98,7 @@ public class CourseInfor extends JDialog implements ActionListener {
 
         CourseMajor = new JTextField();
         CourseMajor.setFont(f);
-        CourseMajor.setBounds(168, 218, 407 - 168, 175 - 133);
+        CourseMajor.setBounds(166, 219, 241, 43);
         add(CourseMajor);
         CourseMajor.setOpaque(false);
         CourseMajor.setBorder(new EmptyBorder(0, 0, 0, 0));
@@ -80,7 +106,7 @@ public class CourseInfor extends JDialog implements ActionListener {
 
         teacherID = new JTextField();
         teacherID.setFont(f);
-        teacherID.setBounds(504, 219, 407 - 168, 175 - 133);
+        teacherID.setBounds(502, 219, 241, 43);
         add(teacherID);
         teacherID.setOpaque(false);
         teacherID.setBorder(new EmptyBorder(0, 0, 0, 0));
@@ -88,7 +114,7 @@ public class CourseInfor extends JDialog implements ActionListener {
 
         Semester = new JTextField();
         Semester.setFont(f);
-        Semester.setBounds(168, 403, 407 - 168, 175 - 133);
+        Semester.setBounds(166, 405, 241, 43);
         add(Semester);
         Semester.setOpaque(false);
         Semester.setBorder(new EmptyBorder(0, 0, 0, 0));
@@ -96,7 +122,7 @@ public class CourseInfor extends JDialog implements ActionListener {
 
         CourseState = new JTextField();
         CourseState.setFont(f);
-        CourseState.setBounds(168, 302, 407 - 168, 175 - 133);
+        CourseState.setBounds(166, 305, 241, 43);
         add(CourseState);
         CourseState.setOpaque(false);
         CourseState.setBorder(new EmptyBorder(0, 0, 0, 0));
@@ -104,7 +130,7 @@ public class CourseInfor extends JDialog implements ActionListener {
 
         CourseType = new JTextField();
         CourseType.setFont(f);
-        CourseType.setBounds(504, 303, 407 - 168, 175 - 133);
+        CourseType.setBounds(502, 405, 241, 43);
         add(CourseType);
         CourseType.setOpaque(false);
         CourseType.setBorder(new EmptyBorder(0, 0, 0, 0));
@@ -113,7 +139,7 @@ public class CourseInfor extends JDialog implements ActionListener {
 
         JButton confirmButtom = new JButton("确定");
         confirmButtom.setFont(new Font("微软雅黑", Font.BOLD, 20));
-        confirmButtom.setBounds(253, 502, 352 - 253, 50);
+        confirmButtom.setBounds(251, 500, 100, 53);
         confirmButtom.addActionListener(this);
         confirmButtom.setActionCommand("confirm");
         add(confirmButtom);
@@ -121,7 +147,7 @@ public class CourseInfor extends JDialog implements ActionListener {
 
 
         JButton exit = new JButton("退出");
-        exit.setBounds(519, 502, 100, 50);
+        exit.setBounds(517, 500, 100, 53);
         add(exit);
         exit.setOpaque(false);
         exit.addActionListener(event ->
@@ -129,11 +155,7 @@ public class CourseInfor extends JDialog implements ActionListener {
             try {
                 this.dispose();
                 ClientCourseFrame ccf = new ClientCourseFrame(userID, this.socket);
-            } catch (ClassNotFoundException e) {
-                throw new RuntimeException(e);
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            } catch (IOException e) {
+            } catch (ClassNotFoundException | SQLException | IOException e) {
                 throw new RuntimeException(e);
             }
         });
@@ -143,14 +165,13 @@ public class CourseInfor extends JDialog implements ActionListener {
     }
 
     public void actionPerformed(ActionEvent e) {
-        if (e.getActionCommand() == "confirm") {
+        if (e.getActionCommand().equals("confirm")) {
             Client client = new Client(this.socket);
             Course course = new Course();
             course.setCourseID(CourseID.getText());
             course.setCourseName(CourseName.getText());
             course.setCourseMajor(CourseMajor.getText());
             course.setTeacherID(teacherID.getText());
-            course.setCourseState(CourseState.getText());
             course.setSemester(Semester.getText());
             course.setCourseType(CourseType.getText());
             Message clientReq = new Message();
@@ -161,11 +182,7 @@ public class CourseInfor extends JDialog implements ActionListener {
             if (rec.isSeccess()) {
                 try {
                     ClientCourseFrame ccf = new ClientCourseFrame(userID, this.socket);
-                } catch (ClassNotFoundException ex) {
-                    throw new RuntimeException(ex);
-                } catch (SQLException ex) {
-                    throw new RuntimeException(ex);
-                } catch (IOException ex) {
+                } catch (ClassNotFoundException | SQLException | IOException ex) {
                     throw new RuntimeException(ex);
                 }
                 this.setVisible(false);

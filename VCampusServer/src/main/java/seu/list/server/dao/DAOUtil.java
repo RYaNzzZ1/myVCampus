@@ -24,9 +24,10 @@ public class DAOUtil {
             c.setCourseID(rs.getString(1));
             c.setCourseMajor(rs.getString(4));
             c.setTeacherID(rs.getString(5));
-            c.setCourseState(rs.getString(6));
             c.setCourseName(rs.getString(3));
-            c.setCourseType(rs.getString(7));
+            c.setCourseType(rs.getString(6));
+            c.setCourseDate(rs.getString(7));
+            c.setCoursePeriod(rs.getString(8));
             for (int i = 1; i <= 7; i++) System.out.print(rs.getString(i) + "\t");
             //System.out.print(rs.getString(6)+"\t");
             System.out.println(c);

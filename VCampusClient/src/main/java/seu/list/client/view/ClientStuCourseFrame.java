@@ -12,8 +12,6 @@ import javax.swing.table.TableColumn;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.io.IOException;
 import java.net.Socket;
 import java.sql.SQLException;
@@ -53,7 +51,7 @@ public class ClientStuCourseFrame extends JFrame implements ActionListener {
         jframe.setLayout(null);
 
         //绘制背景图片
-        JLabel backgroundImageLabel = new JLabel(new ImageIcon("VCampusClient/src/main/resources/ClientStuCourseFrame.PNG"));
+        JLabel backgroundImageLabel = new JLabel(new ImageIcon(getClass().getClassLoader().getResource("imgs/ClientStuCourseFrame.png")));
         Toolkit k = Toolkit.getDefaultToolkit();
         Dimension d = k.getScreenSize();
         setBounds(d.width / 2 - 640, d.height / 2 - 360, 1280, 720);

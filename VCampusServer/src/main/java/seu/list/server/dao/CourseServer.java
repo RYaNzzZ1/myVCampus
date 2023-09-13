@@ -142,7 +142,7 @@ public class CourseServer {
         }
     }
 
-    public Message getMesToClient() { // �����޸ģ��������Ҫ�����������
+    public Message getMesToClient() {
         System.out.println("mesToClient的内容是" + this.mesToClient.getContent());
         return this.mesToClient;
     }
@@ -195,17 +195,16 @@ public class CourseServer {
 
     public boolean genAddCourse(Course course) {
         // TODO Auto-generated method stub
-        String sql = "insert into tb_Class(cID,Semester,CourseMajor,courseName,teacherID,CourseState,CourseType,CourseDate,CoursePeriod) values (?,?,?,?,?,?,?,?,?)";
-        String[] paras = new String[9];
+        String sql = "insert into tb_Class(cID,Semester,CourseMajor,courseName,teacherID,CourseType,CourseDate,CoursePeriod) values (?,?,?,?,?,?,?,?)";
+        String[] paras = new String[8];
         paras[1] = course.getSemester();
         paras[0] = course.getCourseID();
         paras[2] = course.getCourseMajor();
         paras[3] = course.getCourseName();
         paras[4] = course.getTeacherID();
-        paras[5] = course.getCourseState();
-        paras[6] = course.getCourseType();
-        paras[7] = course.getCourseDate();
-        paras[8] = course.getCoursePeriod();
+        paras[5] = course.getCourseType();
+        paras[6] = course.getCourseDate();
+        paras[7] = course.getCoursePeriod();
         return new SqlHelper().sqlUpdate(sql, paras);
     }
 

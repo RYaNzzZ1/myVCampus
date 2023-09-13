@@ -10,7 +10,6 @@ public class Course implements Serializable {
     private String CourseMajor;
     private String CourseName;
     private String teacherID;
-    private String CourseState;
     private String CourseType;
     private String CourseDate;
     private String CoursePeriod;
@@ -20,27 +19,6 @@ public class Course implements Serializable {
      */
 
     public Course() {
-    }
-
-    /**
-     * 构造函数
-     *
-     * @param semester    授课学期
-     * @param courseID    课程编号
-     * @param courseMajor 专业
-     * @param courseName  课程名称
-     * @param teacherID   授课教师
-     * @param courseState 课程状态
-     * @param courseType  课程类型
-     */
-    public Course(String semester, String courseID, String courseMajor, String courseName, String teacherID, String courseState, String courseType) {
-        Semester = semester;
-        CourseID = courseID;
-        CourseMajor = courseMajor;
-        CourseName = courseName;
-        this.teacherID = teacherID;
-        CourseState = courseState;
-        CourseType = courseType;
     }
 
     public String getCourseDate() {
@@ -132,16 +110,12 @@ public class Course implements Serializable {
     /**
      * @return 课程状态
      */
-    public String getCourseState() {
-        return CourseState;
-    }
+
 
     /**
      * @param courseState 课程状态
      */
-    public void setCourseState(String courseState) {
-        CourseState = courseState;
-    }
+
 
     /**
      * @return 课程类型
@@ -165,7 +139,6 @@ public class Course implements Serializable {
                 ", CourseMajor='" + CourseMajor + '\'' +
                 ", CourseName='" + CourseName + '\'' +
                 ", teacherID='" + teacherID + '\'' +
-                ", CourseState='" + CourseState + '\'' +
                 ", CourseType='" + CourseType + '\'' +
                 '}';
     }
@@ -180,8 +153,9 @@ public class Course implements Serializable {
         courseContents.add(CourseMajor);
         courseContents.add(CourseName);
         courseContents.add(teacherID);
-        courseContents.add(CourseState);
         courseContents.add(CourseType);
+        courseContents.add(CourseDate);
+        courseContents.add(CoursePeriod);
         return courseContents;
     }
 
@@ -194,7 +168,8 @@ public class Course implements Serializable {
         CourseMajor = content.get(2);
         CourseName = content.get(3);
         teacherID = content.get(4);
-        CourseState = content.get(5);
-        CourseType = content.get(6);
+        CourseType = content.get(5);
+        CourseDate = content.get(6);
+        CoursePeriod = content.get(7);
     }
 }
