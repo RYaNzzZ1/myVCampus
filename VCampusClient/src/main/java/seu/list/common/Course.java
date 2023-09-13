@@ -10,6 +10,7 @@ public class Course implements Serializable {
     private String CourseMajor;
     private String CourseName;
     private String teacherID;
+    //private String CourseState;
     private String CourseType;
     private String CourseDate;
     private String CoursePeriod;
@@ -21,20 +22,24 @@ public class Course implements Serializable {
     public Course() {
     }
 
-    public String getCourseDate() {
-        return CourseDate;
-    }
-
-    public void setCourseDate(String courseDate) {
-        CourseDate = courseDate;
-    }
-
-    public String getCoursePeriod() {
-        return CoursePeriod;
-    }
-
-    public void setCoursePeriod(String coursePeriod) {
-        CoursePeriod = coursePeriod;
+    /**
+     * 构造函数
+     *
+     * @param semester    授课学期
+     * @param courseID    课程编号
+     * @param courseMajor 专业
+     * @param courseName  课程名称
+     * @param teacherID   授课教师
+     * @param courseType  课程类型
+     */
+    public Course(String semester, String courseID, String courseMajor, String courseName, String teacherID, String courseType) {
+        Semester = semester;
+        CourseID = courseID;
+        CourseMajor = courseMajor;
+        CourseName = courseName;
+        this.teacherID = teacherID;
+        //CourseState = courseState;
+        CourseType = courseType;
     }
 
     /**
@@ -110,12 +115,16 @@ public class Course implements Serializable {
     /**
      * @return 课程状态
      */
-
-
-    /**
-     * @param courseState 课程状态
-     */
-
+//    public String getCourseState() {
+//        return CourseState;
+//    }
+//
+//    /**
+//     * @param courseState 课程状态
+//     */
+//    public void setCourseState(String courseState) {
+//        CourseState = courseState;
+//    }
 
     /**
      * @return 课程类型
@@ -139,12 +148,14 @@ public class Course implements Serializable {
                 ", CourseMajor='" + CourseMajor + '\'' +
                 ", CourseName='" + CourseName + '\'' +
                 ", teacherID='" + teacherID + '\'' +
+                ", Date='" + CourseDate + '\'' +
+                ", Period='" + CoursePeriod + '\'' +
                 ", CourseType='" + CourseType + '\'' +
                 '}';
     }
 
     /**
-     * @return 课程信息（授课学期，课程编号，专业，课程名称，授课教师，课程状态，课程类型)
+     * @return 课程信息（授课学期，课程编号，专业，课程名称，授课教师，课程状态，课程类型,星期，时间段）
      */
     public Vector<String> getContent() {
         Vector<String> courseContents = new Vector<String>();
@@ -153,9 +164,9 @@ public class Course implements Serializable {
         courseContents.add(CourseMajor);
         courseContents.add(CourseName);
         courseContents.add(teacherID);
-        courseContents.add(CourseType);
         courseContents.add(CourseDate);
         courseContents.add(CoursePeriod);
+        courseContents.add(CourseType);
         return courseContents;
     }
 
@@ -168,8 +179,17 @@ public class Course implements Serializable {
         CourseMajor = content.get(2);
         CourseName = content.get(3);
         teacherID = content.get(4);
-        CourseType = content.get(5);
-        CourseDate = content.get(6);
-        CoursePeriod = content.get(7);
+        CourseDate = content.get(5);
+        CoursePeriod = content.get(6);
+        CourseType = content.get(7);
     }
+
+    public String getCourseDate() {
+        return CourseDate;
+    }
+    public void setCourseDate(String week){this.CourseDate =week;}
+    public String getCoursePeriod() {
+        return CoursePeriod;
+    }
+    public void setCoursePeriod(String period){this.CoursePeriod =period;}
 }
