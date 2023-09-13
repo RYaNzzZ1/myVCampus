@@ -21,6 +21,7 @@ import java.awt.Dialog.ModalExclusionType;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class Shop_StudentFrame {
 
@@ -53,7 +54,7 @@ public class Shop_StudentFrame {
         frame = new JFrame();
         frame.setBounds(100, 100, 800, 532);
         //设置背景图片
-        JLabel backgroundImageLabel = new JLabel(new ImageIcon(getClass().getClassLoader().getResource("imgs/Shop_StudentFrame.png")));
+        JLabel backgroundImageLabel = new JLabel(new ImageIcon("VCampusClient/src/main/resources/Shop_StudentFrame.PNG"));
         Toolkit k = Toolkit.getDefaultToolkit();
         Dimension d = k.getScreenSize();
         frame.setBounds(d.width / 2 - 640, d.height / 2 - 360, 1280, 720);
@@ -129,7 +130,7 @@ public class Shop_StudentFrame {
                     }
                 }//表格增加监听，修改信息时需确认
         );
-
+          table.setEnabled(false);
         //透明化处理
         table.setForeground(Color.BLACK);
         table.setFont(new Font("Serif", Font.BOLD, 28));
@@ -195,11 +196,453 @@ public class Shop_StudentFrame {
 
         btnNewButton_2.setBounds(285, 156, 338 - 285, 199 - 157);
         frame.add(btnNewButton_2);
+
+        //购物车按钮
+        btnNewButton_2 = new JButton("购物车");
+        btnNewButton_2.setOpaque(false);
+        btnNewButton_2.setBounds(865,591,1024-865,645-591);
+        frame.add(btnNewButton_2);
+        btnNewButton_2.addActionListener(event->
+        {
+            JFrame Car=new JFrame("购物车");
+            JLabel back = new JLabel(new ImageIcon("VCampusClient/src/main/resources/ShaopCar.jpg"));
+            Car.setBounds(d.width / 2 - 441, d.height / 2 - 649/2, 882,649+25);
+            back.setBounds(0, 0, 882,649);
+            Car.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+            Car.setResizable(false);
+            Car.setLayout(null);
+
+             //购物车清单表格
+            DefaultTableModel tablemodel=updateCar();
+            JTable table2=new JTable(tablemodel);
+            JScrollPane scrollPane=new JScrollPane(table2);
+            table2.setBounds(0,0,763-146,470-127);
+            scrollPane.setBounds(147,127,763-146,470-127);
+            Car.setVisible(true);
+            Car.add(scrollPane);
+            Trans(table2,scrollPane);
+            Car.add(back);
+            table2.setEnabled(false);
+
+
+
+
+          //鼠标定位
+         /*   back.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    int x = e.getX();
+                    int y = e.getY();
+                    System.out.println("鼠标点击位置：X=" + x + ", Y=" + y);
+                }
+            });*/
+
+            //购入按钮
+            JButton add=new JButton("购入");
+            add.setOpaque(false);
+            add.setBounds(173,542,288-173,594-542);
+            Car.add(add);
+            add.setOpaque(false);
+            add.addActionListener(event2->
+            {
+                JFrame GoodsAdd=new JFrame("商品购入修改");
+                JLabel backadd = new JLabel(new ImageIcon("VCampusClient/src/main/resources/GoodsAdd.jpg"));
+                GoodsAdd.setBounds(d.width / 2 - 845/2, d.height / 2 - 588/2, 845,588+25);
+                backadd.setBounds(0, 0, 845,588);
+                GoodsAdd.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+                GoodsAdd.setResizable(false);
+                GoodsAdd.setLayout(null);
+                GoodsAdd.setVisible(true);
+
+                //鼠标定位
+          /* backadd.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    int x = e.getX();
+                    int y = e.getY();
+                    System.out.println("鼠标点击位置：X=" + x + ", Y=" + y);
+                }
+            });*/
+
+                //商品编号输入框
+                JTextField number=new JTextField("");
+                Font f=new Font("华文行楷",Font.BOLD,30);
+                number.setFont(f);
+                number.setBounds(335,176,697-335,218-176);
+                GoodsAdd.add(number);
+                number.setOpaque(false);
+                number.setBorder(new EmptyBorder(0,0,0,0));
+
+
+                //商品数量显示框
+                JTextField num=new JTextField("0");
+                num.setFont(f);
+                num.setBounds(431,285,607-431,330-285);
+                num.setHorizontalAlignment(SwingConstants.CENTER);
+                num.setOpaque(false);
+                num.setBorder(new EmptyBorder(0,0,0,0));
+                num.setEnabled(false);
+                GoodsAdd.add(num);
+                GoodsAdd.add(backadd);
+
+                //增加按钮
+                JButton a=new JButton("曾");
+                a.setBounds(633,278,406-350,332-280);
+                GoodsAdd.add(a);
+                a.addActionListener(cc->
+                {
+                    int n=Integer.parseInt(num.getText());
+                    n++;
+                    num.setText(n+"");
+
+                });
+
+                a.setOpaque(false);
+                //减少按钮
+                JButton b=new JButton("键");
+                b.setBounds(350,280,406-350,332-280);
+                GoodsAdd.add(b);
+                b.addActionListener(bb->
+                {
+                    int n=Integer.parseInt(num.getText());
+                    if(n==0)
+                    {
+                        JOptionPane.showMessageDialog(
+                               null,
+                                "商品数量不可为负数！",
+                                "警告",
+                                JOptionPane.WARNING_MESSAGE
+                        );
+                    }
+                    else
+                    {
+                        n--;
+                        num.setText(n+"");
+                    }
+                });
+               b.setOpaque(false);
+
+                //保存按钮
+                JButton save=new JButton("Save");
+                save.setBounds(234,435,337-234,495-435);
+                GoodsAdd.add(save);
+                save.addActionListener(dd->
+                {
+                    if(number.getText().trim().equals(""))
+                    {
+                        JOptionPane.showMessageDialog(
+                                null,
+                                "商品编号不可为空！",
+                                "警告",
+                                JOptionPane.WARNING_MESSAGE
+                        );
+                    }
+                    else if(num.getText().equals("0"))
+                    {
+                        JOptionPane.showMessageDialog(
+                                null,
+                                "商品数量不可为0！",
+                                "警告",
+                                JOptionPane.WARNING_MESSAGE
+                        );
+                    }
+                    else {  //添加成功
+                        int zz=0;
+                        String str=number.getText();
+                        for(;zz<table.getRowCount();zz++)
+                        {
+                            if(table.getValueAt(zz,0).toString().equals(str))
+                                break;
+                        }
+                        if(zz==table.getRowCount())
+                        {
+                            JOptionPane.showMessageDialog(
+                                    null,
+                                    "请输入正确的商品编号",
+                                    "警告",
+                                    JOptionPane.WARNING_MESSAGE
+                            );
+                        }
+                        else
+                        {
+
+                            String s=num.getText().toString();
+                            table.setValueAt(s,zz,4);
+                            DefaultTableModel m=updateCar();
+                            table2.setModel(m);
+                            Trans(table2,scrollPane);
+                            GoodsAdd.dispose();
+                        }
+                    }
+                });
+                save.setOpaque(false);
+                //取消按钮
+                JButton Cancel=new JButton("取消");
+                Cancel.setBounds(504,436,337-234,495-435);
+                GoodsAdd.add(Cancel);
+                Cancel.addActionListener(aa->
+                {
+                    GoodsAdd.dispose();
+                });
+                Cancel.setOpaque(false);
+
+            });
+
+            //修改按钮
+            JButton motify=new JButton("修改");
+            add.setOpaque(false);
+            motify.setBounds(381,541,288-173,594-542);
+            Car.add(motify);
+            motify.setOpaque(false);
+            motify.addActionListener(dd->
+            {
+                JFrame GoodsAdd=new JFrame("商品修改");
+                JLabel backadd = new JLabel(new ImageIcon("VCampusClient/src/main/resources/GoodsMotify.jpg"));
+                GoodsAdd.setBounds(d.width / 2 - 845/2, d.height / 2 - 588/2, 845,588+25);
+                backadd.setBounds(0, 0, 845,588);
+                GoodsAdd.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+                GoodsAdd.setResizable(false);
+                GoodsAdd.setLayout(null);
+                GoodsAdd.setVisible(true);
+
+                //鼠标定位
+          /* backadd.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    int x = e.getX();
+                    int y = e.getY();
+                    System.out.println("鼠标点击位置：X=" + x + ", Y=" + y);
+                }
+            });*/
+
+                //商品编号输入框
+                JTextField number=new JTextField("");
+                Font f=new Font("华文行楷",Font.BOLD,30);
+                number.setFont(f);
+                number.setBounds(321,169,582-321,221-169);
+                GoodsAdd.add(number);
+                number.setOpaque(false);
+                number.setBorder(new EmptyBorder(0,0,0,0));
+
+
+                //商品数量显示框
+                JTextField num=new JTextField("0");
+                num.setFont(f);
+                num.setBounds(430,296,631-430,345-296);
+                num.setHorizontalAlignment(SwingConstants.CENTER);
+                num.setOpaque(false);
+                num.setBorder(new EmptyBorder(0,0,0,0));
+                num.setEnabled(false);
+                GoodsAdd.add(num);
+                GoodsAdd.add(backadd);
+
+                //增加按钮
+                JButton a=new JButton("曾");
+                a.setBounds(657,285,720-657,349-285);
+                GoodsAdd.add(a);
+                a.addActionListener(cc->
+                {
+                    int n=Integer.parseInt(num.getText());
+                    n++;
+                    num.setText(n+"");
+
+                });
+              //刷新按钮
+                JButton flash=new JButton("刷新");
+                flash.setBounds(606,171,100,222-171);
+                GoodsAdd.add(flash);
+                flash.setOpaque(false);
+                AtomicInteger flag= new AtomicInteger(-1);//代表当前选择商品的行数
+                flash.addActionListener(ee->
+                {
+                    for(int i=0;i<table2.getRowCount();i++)
+                    {
+                        if(table2.getValueAt(i,0).toString().equals(number.getText()))
+                        {
+                            flag.set(i);
+                            break;
+                        }
+                    }
+                    if(flag.get()==-1)
+                    {
+                        JOptionPane.showMessageDialog(
+                                null,
+                                "请输入正确的购物车中的商品编号！",
+                                "警告",
+                                JOptionPane.WARNING_MESSAGE
+                        );
+                        number.setText("");
+                    }
+                    else
+                       num.setText(table2.getValueAt(flag.get(),3).toString());
+                });
+                int t=flag.get();
+                a.setOpaque(false);
+                //减少按钮
+                JButton b=new JButton("键");
+                b.setBounds(341,287,402-341,349-287);
+                GoodsAdd.add(b);
+                b.setOpaque(false);
+                b.addActionListener(bb->
+                {
+                    int n=Integer.parseInt(num.getText());
+                    if(n==0)
+                    {
+                        JOptionPane.showMessageDialog(
+                                null,
+                                "商品数量不可为负数！",
+                                "警告",
+                                JOptionPane.WARNING_MESSAGE
+                        );
+                    }
+                    else
+                    {
+                        n--;
+                        num.setText(n+"");
+                    }
+                });
+                //b.setOpaque(false);
+
+                //保存按钮
+                JButton save=new JButton("Save");
+                save.setBounds(209,466,327-209,530-466);
+                GoodsAdd.add(save);
+                save.addActionListener(ff->
+                {
+                    if(number.getText().trim().equals(""))
+                    {
+                        JOptionPane.showMessageDialog(
+                                null,
+                                "商品编号不可为空！",
+                                "警告",
+                                JOptionPane.WARNING_MESSAGE
+                        );
+                    }
+                    else {  //添加成功
+                        int zz=0;
+                        String str=number.getText();
+                        for(;zz<table.getRowCount();zz++)
+                        {
+                            if(table.getValueAt(zz,0).toString().equals(str))
+                                break;
+                        }
+                        if(zz==table.getRowCount())
+                        {
+                            JOptionPane.showMessageDialog(
+                                    null,
+                                    "请输入正确的商品编号",
+                                    "警告",
+                                    JOptionPane.WARNING_MESSAGE
+                            );
+                        }
+                        else
+                        {
+
+                            String s=num.getText().toString();
+                            table.setValueAt(s,zz,4);
+                            DefaultTableModel m=updateCar();
+                            table2.setModel(m);
+                            Trans(table2,scrollPane);
+                            GoodsAdd.dispose();
+                        }
+                    }
+                });
+                save.setOpaque(false);
+                //取消按钮
+                JButton Cancel=new JButton("取消");
+                Cancel.setBounds(510,464,628-510,529-464);
+                GoodsAdd.add(Cancel);
+                Cancel.addActionListener(aa->
+                {
+                    GoodsAdd.dispose();
+                });
+                Cancel.setOpaque(false);
+
+
+            });
+
+            //取消按钮
+            JButton no=new JButton("退出");
+            add.setOpaque(false);
+            no.setBounds(597,543,288-173,594-542);
+            Car.add(no);
+            no.setOpaque(false);
+            no.addActionListener(event1->
+            {
+                //1.捕获当前购物车数量更新到商店表格里面，并且计算总金额多少
+                int j=0;
+                Double Sum=0.0;
+                for (int i=0;i<table2.getRowCount();i++)
+                {
+
+                    while(!(table.getValueAt(j,0).toString().equals(table2.getValueAt(i,0).toString())))
+                    {
+
+                        j++;
+                    }
+
+                    Sum=Sum+ Double.parseDouble(table2.getValueAt(i,3).toString())*Double.parseDouble( table2.getValueAt(i,2).toString());
+                    table.setValueAt(table2.getValueAt(i,3),j,4);
+                    j++;
+                }
+                textField.setText(Sum+"");
+               //更新总金额显示栏
+                //2.购物车窗口销毁
+                Car.dispose();
+            });
+        });
+    }
+
+    void Trans(JTable table, JScrollPane scrollPane)  //透明化处理函数
+    {
+        //透明化处理
+        table.setForeground(Color.BLACK);
+        table.setFont(new Font("Serif", Font.BOLD, 28));
+        table.setRowHeight(40);                //表格行高
+        table.setPreferredScrollableViewportSize(new Dimension(850, 500));
+        table.setAutoResizeMode(JTable.AUTO_RESIZE_SUBSEQUENT_COLUMNS);
+        DefaultTableCellRenderer renderer = new DefaultTableCellRenderer();
+        renderer.setOpaque(false);    //设置透明
+        String[] Names = {
+                "商品编号", "商品名称", "单价", "选购数量"};
+        for (int i = 0; i < 4; i++) {
+            table.getColumn(Names[i]).setCellRenderer(renderer);//单格渲染
+            TableColumn column = table.getTableHeader().getColumnModel().getColumn(i);
+            column.setHeaderRenderer(renderer);//表头渲染
+        }
+        table.setOpaque(false);
+        table.getTableHeader().setOpaque(false);
+        table.getTableHeader().setBorder(BorderFactory.createBevelBorder(0));
+        scrollPane.getVerticalScrollBar().setOpaque(false);//滚动条设置透明
+        scrollPane.setOpaque(false);
+        scrollPane.getViewport().setOpaque(false);
+        scrollPane.setColumnHeaderView(table.getTableHeader());
+        scrollPane.getColumnHeader().setOpaque(false);
     }
 
     /**
      * 将商品信息显示到表格中
      */
+    DefaultTableModel updateCar()
+    {
+        //选购商品清单表格
+        DefaultTableModel  tablemodel = new DefaultTableModel(new Object[][]{}, new String[]{
+                "商品编号", "商品名称", "单价", "选购数量"});
+        for(int i=0;i<table.getRowCount();i++)
+        {
+            if(!table.getValueAt(i,4).toString().equals("0"))
+            {
+                String tempgoods[] = new String[4];
+                tempgoods[0] = table.getValueAt(i,0) + "";
+                tempgoods[1] = table.getValueAt(i,1)+"";
+                tempgoods[2] = table.getValueAt(i,2) + "";
+                tempgoods[3] = table.getValueAt(i,4) + "";
+                tablemodel.addRow(tempgoods);
+            }
+        }
+        return tablemodel;
+    }
+
 
     public void show() {
         Message mes = new Message();
@@ -215,7 +658,7 @@ public class Shop_StudentFrame {
 
 
             boolean[] columnEditables = new boolean[]{
-                    false, false, false, false, true
+                    false, false, false, false,true
             };
 
             @Override
@@ -241,7 +684,7 @@ public class Shop_StudentFrame {
         tableModel.addTableModelListener(new TableModelListener() {
             @Override
             public void tableChanged(TableModelEvent e) {
-                // 第一个 和 最后一个 被改变的行（只改变了一行，则两者相同)
+                // 第一个 和 最后一个 被改变的行（只改变了一行，则两者相同）
                 int firstRow = e.getFirstRow();
                 int lastRow = e.getLastRow();
 
@@ -352,7 +795,7 @@ public class Shop_StudentFrame {
             tableModel.addTableModelListener(new TableModelListener() {
                 @Override
                 public void tableChanged(TableModelEvent e) {
-                    // 第一个 和 最后一个 被改变的行（只改变了一行，则两者相同)
+                    // 第一个 和 最后一个 被改变的行（只改变了一行，则两者相同）
                     int firstRow = e.getFirstRow();
                     int lastRow = e.getLastRow();
 
@@ -424,7 +867,7 @@ public class Shop_StudentFrame {
             tableModel.addTableModelListener(new TableModelListener() {
                 @Override
                 public void tableChanged(TableModelEvent e) {
-                    // 第一个 和 最后一个 被改变的行（只改变了一行，则两者相同)
+                    // 第一个 和 最后一个 被改变的行（只改变了一行，则两者相同）
                     int firstRow = e.getFirstRow();
                     int lastRow = e.getLastRow();
 
@@ -538,7 +981,7 @@ public class Shop_StudentFrame {
             // 获取当前单元格编辑器输入的值
             Object obj = getCellEditorValue();
 
-            // 如果当前单元格编辑器输入的值不是数字，则返回 false（表示数据非法，不允许设置，无法保存)
+            // 如果当前单元格编辑器输入的值不是数字，则返回 false（表示数据非法，不允许设置，无法保存）
             if (obj == null || !obj.toString().matches("[0-9]*")) {
                 // 数据非法时，设置编辑器组件内的内容颜色为红色
                 comp.setForeground(Color.RED);
