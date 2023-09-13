@@ -115,7 +115,7 @@ public class CourseServer {
                 System.out.println("serving REQ_SEARCH_LESSON");
                 System.out.println("searching.....");
                 Course course = new Course();
-                String courseID = this.mesFromClient.getContent().get(1);
+                String courseID = this.mesFromClient.getContent().get(0);
                 System.out.println("CourseID为" + courseID);
                 course = this.searchCourseByID(courseID);
                 if (course == null) this.mesToClient.setSeccess(false);
@@ -217,8 +217,8 @@ public class CourseServer {
         paras2[1] = uID;
         paras2[2] = courseID;
         paras2[3] = thiscourse.get(0).getCourseName();
-        paras2[4] = thiscourse.get(0).getCourseDate();
-        paras2[5] = thiscourse.get(0).getCoursePeriod();
+        paras2[4] = thiscourse.get(0).getCoursePeriod();
+        paras2[5] = thiscourse.get(0).getCourseType();
         String sql2 = "insert into tb_Stc(scID,uID,cID,courseName,CourseDate,CoursePeriod) values(?,?,?,?,?,?)";
 
         return new SqlHelper().sqlUpdate(sql2, paras2);
