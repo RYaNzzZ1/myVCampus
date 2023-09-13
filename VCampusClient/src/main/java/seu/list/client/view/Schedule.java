@@ -2,7 +2,10 @@ package seu.list.client.view;
 
 import seu.list.client.driver.Client;
 import seu.list.client.driver.ClientMainFrame;
-import seu.list.common.*;
+import seu.list.common.Course;
+import seu.list.common.Message;
+import seu.list.common.MessageType;
+import seu.list.common.ModuleType;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -36,7 +39,7 @@ public class Schedule extends JFrame {
         setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         setLayout(null); // 使用绝对定位
         // 创建带有背景图片的JLabel
-        ImageIcon image = new ImageIcon("VCampusClient/src/main/resources/Schedule.png");
+        ImageIcon image = new ImageIcon(getClass().getClassLoader().getResource("imgs/Schedule.png"));
         JLabel backlabel = new JLabel(image);
         //获取当前屏幕的尺寸（长、宽的值）
         Toolkit k = Toolkit.getDefaultToolkit();
@@ -49,18 +52,6 @@ public class Schedule extends JFrame {
         setResizable(false); //阻止用户拖拽改变窗口的大小
         setVisible(true);
 
-        //2.绘制退出按钮
-        //得到鼠标的坐标（用于推算对话框应该摆放的坐标）
-      /*backlabel.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-				int x = e.getX();
-				int y = e.getY();
-				System.out.println("鼠标点击位置：X=" + x + ", Y=" + y);
-			}
-        });*/
-
-
         //设置表格
 
         ArrayList<Course> timetable = new ArrayList<Course>();
@@ -68,25 +59,32 @@ public class Schedule extends JFrame {
         Message mes = new Message();
         mes.setUserType(0);
         Client client = new Client(ClientMainFrame.socket);
-        User user = new User();
-        user.setId(cli.userID);
+
         mes.setModuleType(ModuleType.Course);
         mes.setMessageType(MessageType.REQ_STU_ALL_CHOOOSE);
-        mes.setContent(user.getContent());
-        Message rec = new Message();
-        rec = client.sendRequestToServer(mes);
-
+        mes.setData(cli.userID);
+        Message rec = client.sendRequestToServer(mes);
 
         Vector<String> allCourseContents = rec.getContent();
-        Object sigRow[] = new String[7];
-        Object ak[][] = new String[4][7];
+        Object[] sigRow = new String[7];
+        Object[][] ak = new String[4][7];
         System.out.println(allCourseContents.size());
-        int max = allCourseContents.size() / 7;
+        int max = allCourseContents.size() / 8;
         for (int i = 0; i < max; i++) {
 
-            int period = Integer.parseInt(allCourseContents.get(7 * i + 6));
+            int period = 0;
+            String p = allCourseContents.get(8 * i + 8);
             int date = 6;
-            String s = allCourseContents.get(7 * i + 5);
+            if (Objects.equals(p, "1-2节"))
+                period = 0;
+            else if (Objects.equals(p, "3-4节"))
+                period = 1;
+            else if (Objects.equals(p, "5-6节"))
+                period = 2;
+            else if (Objects.equals(p, "7-8节"))
+                period = 3;
+
+            String s = allCourseContents.get(8 * i + 7);
             String j;
             if (Objects.equals(s, "一"))
                 date = 0;
@@ -98,20 +96,20 @@ public class Schedule extends JFrame {
                 date = 3;
             else /*if (s=="五")*/
                 date = 4;
-            if (period == 1)
+            /*if (period == 1)
                 j = " 1-2节";
             else if (period == 2)
                 j = " 3-4节";
             else if (period == 3)
                 j = " 5-6节";
             else
-                j = " 7-8节";
-            /*System.out.println(s);
+                j = " 7-8节";*/
+            System.out.println(s);
             System.out.println(period);
             System.out.println(date);
-            System.out.println("--------------------------------------");*/
+            System.out.println("--------------------------------------");
             if ((period < 5) && (date < 7))
-                ak[period - 1][date] = "<html>" + allCourseContents.get(7 * i + 3) + "<br>" + "1-16周" + j + "<br>" + allCourseContents.get(7 * i + 4) + "</html>";
+                ak[period - 1][date] = "<html>" + allCourseContents.get(8 * i + 3) + "<br>" + "1-16周" + p + "<br>" + allCourseContents.get(7 * i + 4) + "</html>";
         }
 
 

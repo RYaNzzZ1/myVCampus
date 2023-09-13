@@ -161,23 +161,21 @@ public class CourseServer {
             case MessageType.REQ_STU_ALL_CHOOOSE: {
                 System.out.println("serving REQ_STU_ALL_CHOOOSE");
                 System.out.println("grabbing......");
-                //�������и�ѧ����ѡ�γ�
                 Vector<String> sigCourseContent = new Vector<String>();
                 Vector<String> allCourseContent = new Vector<String>();
-                List<Course> allCourse; //= new LinkedList<Course>();
+                List<Course> allCourse;
                 User user = new User();
                 user.setId(String.valueOf(this.mesFromClient.getData()));
                 allCourse = user.getCourses();
-                Iterator<Course> iteAllCourse = allCourse.iterator();
-                while (iteAllCourse.hasNext()) {
-                    sigCourseContent = iteAllCourse.next().getContent();
+                for (Course course : allCourse) {
+                    sigCourseContent = course.getContent();
                     if (sigCourseContent != null)
                         for (int i = 0; i <= 6; i++) {
                             allCourseContent.add(sigCourseContent.get(i));
                         }
 
                 }
-                this.mesToClient.setData(allCourseContent);
+                this.mesToClient.setContent(allCourseContent);
                 System.out.println("REQ_STU_ALL_CHOOOSE finished");
                 break;
             }
@@ -216,7 +214,7 @@ public class CourseServer {
     }
     public List<Course> getAllCourse() {
         // TODO Auto-generated method stub
-        String sql = "select * from tb_Class where not cID = '-1'";
+        String sql = "select * from tb_Class";
         return new SqlHelper().sqlCourseQuery(sql, new String[]{});
     }
 

@@ -306,8 +306,6 @@ public class ClassAdminClient extends JFrame {
         serverresponse = client.sendRequestToServer(mes);
         stu = (Vector<Student>) serverresponse.getData();
         Stu = stu;
-        // String get = serverresponse.getData().toString();
-        // System.out.println(get);
         String[] arr = new String[6];
         for (int i = 0; i < stu.size(); i++) {
             //System.out.println(stu.get(i).getMajor());

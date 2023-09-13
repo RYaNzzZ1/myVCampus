@@ -269,7 +269,7 @@ public class ClientStuCourseFrame extends JFrame implements ActionListener {
             tem.setLayout(null);
 
             //绘制背景图片
-            JLabel backgroundImageLabel = new JLabel(new ImageIcon("VCampusClient/src/main/resources/StudentSelectCourse.jpg"));
+            JLabel backgroundImageLabel = new JLabel(new ImageIcon(getClass().getClassLoader().getResource("imgs/StudentSelectCourse.jpg")));
             Toolkit k = Toolkit.getDefaultToolkit();
             Dimension d = k.getScreenSize();
             tem.setBounds(d.width / 2 - 825 / 2, d.height / 2 - 415 / 2, 825, 415 + 25);
@@ -277,16 +277,6 @@ public class ClientStuCourseFrame extends JFrame implements ActionListener {
             tem.setResizable(false);
             tem.setLayout(null);
             tem.setVisible(true);
-            //2.绘制退出按钮
-            //得到鼠标的坐标（用于推算对话框应该摆放的坐标）
-     /*backgroundImageLabel.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-				int x = e.getX();
-				int y = e.getY();
-				System.out.println("鼠标点击位置：X=" + x + ", Y=" + y);
-			}
-        });*/
 
 
             jtf2.setBounds(260, 154, 616 - 260, 197 - 154);
@@ -325,11 +315,11 @@ public class ClientStuCourseFrame extends JFrame implements ActionListener {
                         jframe.setVisible(true);
                         tem.dispose();
 
-                    } else if(Objects.equals(rec.getErrorMessage(), "Course conflict.")){
+                    } else if (Objects.equals(rec.getErrorMessage(), "Course conflict.")) {
                         JOptionPane.showMessageDialog(null, "课程冲突", "错误", JOptionPane.ERROR_MESSAGE);
-                    }  else if (Objects.equals(rec.getErrorMessage(), "Null")) {
+                    } else if (Objects.equals(rec.getErrorMessage(), "Null")) {
                         JOptionPane.showMessageDialog(null, "课程不存在", "错误", JOptionPane.ERROR_MESSAGE);
-                    } else if (Objects.equals(rec.getErrorMessage(), "Chose")){
+                    } else if (Objects.equals(rec.getErrorMessage(), "Chose")) {
                         JOptionPane.showMessageDialog(null, "课程已添加", "错误", JOptionPane.ERROR_MESSAGE);
                     }
                     jtf2.setText("");
@@ -357,15 +347,6 @@ public class ClientStuCourseFrame extends JFrame implements ActionListener {
         } else if (e.getActionCommand().equals("chozen")) {
             //this.setVisible(false);
             Schedule sch1 = new Schedule(this);
-            /*Message clientReq = new Message();//新建申请用于交换
-            User user = new User();
-            user.setId(userID);
-            clientReq.setContent(user.getContent());
-            clientReq.setModuleType(ModuleType.Course);
-            clientReq.setMessageType("REQ_STU_ALL_CHOOOSE");
-            Message rec = client.sendRequestToServer(clientReq);
-
-            display(rec);*/
         } else if (e.getActionCommand().equals("check")) {
             if (!Objects.equals(jtf1.getText(), "")) {
                 Message clientReq = new Message();//新建申请用于交换
@@ -432,14 +413,14 @@ public class ClientStuCourseFrame extends JFrame implements ActionListener {
                 this.setLocationRelativeTo(null);
             }
             jtf1.setText("");
-        } else if (e.getActionCommand() == "cancel") {
+        } else if (e.getActionCommand().equals("cancel")) {
             jframe.setVisible(false);
             JFrame tem = new JFrame();
             tem.setTitle("退课");
             tem.setLayout(null);
 
             //绘制背景图片
-            JLabel backgroundImageLabel = new JLabel(new ImageIcon("VCampusClient/src/main/resources/StudentCancekCourse.jpg"));
+            JLabel backgroundImageLabel = new JLabel(new ImageIcon(getClass().getClassLoader().getResource("imgs/StudentCancekCourse.jpg")));
             Toolkit k = Toolkit.getDefaultToolkit();
             Dimension d = k.getScreenSize();
             tem.setBounds(d.width / 2 - 827 / 2, d.height / 2 - 381 / 2, 827, 381 + 25);
@@ -447,17 +428,6 @@ public class ClientStuCourseFrame extends JFrame implements ActionListener {
             tem.setResizable(false);
             tem.setLayout(null);
             tem.setVisible(true);
-
-            //2.绘制退出按钮
-            //得到鼠标的坐标（用于推算对话框应该摆放的坐标）
-     /*backgroundImageLabel.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-				int x = e.getX();
-				int y = e.getY();
-				System.out.println("鼠标点击位置：X=" + x + ", Y=" + y);
-			}
-        });*/
 
             jtf2.setBounds(263, 147, 620 - 263, 189 - 147);
             tem.add(jtf2);
@@ -492,15 +462,13 @@ public class ClientStuCourseFrame extends JFrame implements ActionListener {
                     user.setId(userID);
                     clientReq.setContent(user.getContent());
                     rec = client.sendRequestToServer(clientReq);
-                    if(rec.getErrorMessage()=="")
+                    if (rec.getErrorMessage().equals("")) {
                         JOptionPane.showMessageDialog(null, "退课成功！", "提示", JOptionPane.PLAIN_MESSAGE);
-                    else
+                    } else {
                         JOptionPane.showMessageDialog(null, "未选择该课程！", "错误", JOptionPane.ERROR_MESSAGE);
-
+                    }
                     jframe.setVisible(true);
                     tem.dispose();
-
-
                     display(rec);
                 } else {
                     JOptionPane.showMessageDialog(null, "非法课程号", "错误", JOptionPane.ERROR_MESSAGE);
@@ -511,13 +479,9 @@ public class ClientStuCourseFrame extends JFrame implements ActionListener {
                     clientReq.setModuleType(ModuleType.Course);
                     clientReq.setMessageType("REQ_SHOW_ALL_LESSON");
                     Message rec = client.sendRequestToServer(clientReq);
-
                     display(rec);
-
                 }
-
             });
-
             Cancel.addActionListener(event ->
             {
                 jframe.setVisible(true);

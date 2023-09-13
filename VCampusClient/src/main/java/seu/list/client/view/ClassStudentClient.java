@@ -334,7 +334,7 @@ public class ClassStudentClient extends JFrame {
                 tem.setVisible(true);
                 setVisible(false);
                 //绘制背景图片
-                JLabel backgroundImageLabel = new JLabel(new ImageIcon("VCampusClient/src/main/resources/MotifyStudent.JPG"));
+                JLabel backgroundImageLabel = new JLabel(new ImageIcon(getClass().getClassLoader().getResource("imgs/MotifyStudent.jpg")));
                 Toolkit k = Toolkit.getDefaultToolkit();
                 Dimension d = k.getScreenSize();
                 tem.setBounds(d.width / 2 - 861 / 2, d.height / 2 - 631 / 2, 861, 631 + 25);
