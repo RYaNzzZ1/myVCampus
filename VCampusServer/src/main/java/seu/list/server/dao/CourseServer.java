@@ -250,33 +250,16 @@ public class CourseServer {
 
     public boolean genAddCourse(Course course) {
         // TODO Auto-generated method stub
-        String sql1 = "insert into tb_Class(cID,Semester,CourseMajor,courseName,teacherID,CourseType,CourseDate,CoursePeriod) values (?,?,?,?,?,?,?,?)";
-        String sql2 = "select * from tb_Class where cID=?";
+        String sql1 = "insert into tb_Class(cID,Semester,CourseName,courseMajor,teacherID,CourseType,CourseDate,CoursePeriod) values (?,?,?,?,?,?,?,?)";
         String[] paras = new String[8];
         paras[1] = course.getSemester();
         paras[0] = course.getCourseID();
-        paras[2] = course.getCourseMajor();
-        paras[3] = course.getCourseName();
+        paras[3] = course.getCourseMajor();
+        paras[2] = course.getCourseName();
         paras[4] = course.getTeacherID();
-        //paras[5] = course.getCourseState();
         paras[5] = course.getCourseType();
         paras[6] = course.getCourseDate();
         paras[7] = course.getCoursePeriod();
-        String[] paras2 = new String[1];
-        paras2[0] = paras[0];
-        List<Course> cList = new SqlHelper().sqlCourseQuery(sql2, paras2);
-        if (cList == null) {
-            String sql3 = "select * from tb_Class where cID =?";
-            String[] paras3 = new String[1];
-            paras3[0] = "-1";
-            List<Course> sum = new SqlHelper().sqlCourseQuery(sql3, paras3);
-            String courseSum = String.valueOf(Integer.parseInt(sum.get(0).getCourseType()) + 1);
-            String sql4 = "update tb_Class from set =? where cID =?";
-            String[] paras4 = new String[2];
-            paras4[0] = courseSum;
-            paras4[1] = "-1";
-            new SqlHelper().sqlUpdate(sql4, paras4);
-        }
         return new SqlHelper().sqlUpdate(sql1, paras);
     }
 

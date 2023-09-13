@@ -20,7 +20,6 @@ public class CourseInfor extends JDialog implements ActionListener {
     private JTextField CourseMajor;
     private JTextField CourseName;
     private JTextField teacherID;
-    private JTextField CourseState;
     private JTextField CourseType;
     private Socket socket;
     private String userID;
@@ -41,17 +40,6 @@ public class CourseInfor extends JDialog implements ActionListener {
         backgroundImageLabel.setBounds(0, 0, 847, 641);
         setResizable(false);
         setLayout(null);
-
-        //2.绘制退出按钮
-        //得到鼠标的坐标（用于推算对话框应该摆放的坐标）
-//     backgroundImageLabel.addMouseListener(new MouseAdapter() {
-//            @Override
-//            public void mouseClicked(MouseEvent e) {
-//				int x = e.getX();
-//				int y = e.getY();
-//				System.out.println("鼠标点击位置：X=" + x + ", Y=" + y);
-//			}
-//        });
 
 
         setTitle("添加课程");
@@ -175,7 +163,7 @@ public class CourseInfor extends JDialog implements ActionListener {
     }
 
     public void actionPerformed(ActionEvent e) {
-        if (e.getActionCommand() == "confirm") {
+        if (e.getActionCommand().equals("confirm")) {
             Client client = new Client(this.socket);
             Course course = new Course();
             course.setCourseID(CourseID.getText());

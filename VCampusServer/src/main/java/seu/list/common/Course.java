@@ -163,10 +163,10 @@ public class Course implements Serializable {
      * @param content 课程信息
      */
     public void setContent(Vector<String> content) {
-        Semester = content.get(0);
-        CourseID = content.get(1);
-        CourseMajor = content.get(2);
-        CourseName = content.get(3);
+        Semester = content.get(1);
+        CourseID = content.get(0);
+        CourseMajor = content.get(3);
+        CourseName = content.get(2);
         teacherID = content.get(4);
         CourseType = content.get(5);
         CourseDate = content.get(6);

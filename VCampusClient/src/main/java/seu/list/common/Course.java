@@ -159,14 +159,14 @@ public class Course implements Serializable {
      */
     public Vector<String> getContent() {
         Vector<String> courseContents = new Vector<String>();
-        courseContents.add(Semester);
         courseContents.add(CourseID);
-        courseContents.add(CourseMajor);
+        courseContents.add(Semester);
         courseContents.add(CourseName);
+        courseContents.add(CourseMajor);
         courseContents.add(teacherID);
+        courseContents.add(CourseType);
         courseContents.add(CourseDate);
         courseContents.add(CoursePeriod);
-        courseContents.add(CourseType);
         return courseContents;
     }
 

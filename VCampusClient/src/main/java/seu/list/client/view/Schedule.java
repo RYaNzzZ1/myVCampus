@@ -1,29 +1,22 @@
 package seu.list.client.view;
+
 import seu.list.client.driver.Client;
 import seu.list.client.driver.ClientMainFrame;
 import seu.list.common.*;
-import sun.swing.table.DefaultTableCellHeaderRenderer;
 
 import javax.swing.*;
-import javax.swing.border.EmptyBorder;
-import javax.swing.table.*;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.io.IOException;
 import java.net.Socket;
-import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Enumeration;
 import java.util.Objects;
 import java.util.Vector;
-import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
-import java.awt.*;
 
-public class Schedule extends JFrame{
+public class Schedule extends JFrame {
     private static final long serialVersionUID = 1L;
     JFrame jframe = new JFrame();
     JButton exitbutton;
@@ -32,6 +25,7 @@ public class Schedule extends JFrame{
     JScrollPane scrollPane2;
     Socket socket;//传送数据
     private ClientStuCourseFrame cli;
+
     public Schedule(ClientStuCourseFrame cli) {
         setTitle("课程表");
         setDefaultCloseOperation(2);
@@ -48,7 +42,7 @@ public class Schedule extends JFrame{
         Toolkit k = Toolkit.getDefaultToolkit();
         Dimension d = k.getScreenSize();
         //将当前窗口设置到屏幕正中央进行显示
-        setBounds(d.width / 2 - 1280 / 2, d.height / 2 - 720 / 2, 1280, 720+25);
+        setBounds(d.width / 2 - 1280 / 2, d.height / 2 - 720 / 2, 1280, 720 + 25);
         backlabel.setSize(1280, 720);
         this.getLayeredPane().add(backlabel, new Integer(Integer.MIN_VALUE));
         backlabel.setOpaque(false); // 设置背景透明
@@ -83,48 +77,47 @@ public class Schedule extends JFrame{
         rec = client.sendRequestToServer(mes);
 
 
-
         Vector<String> allCourseContents = rec.getContent();
         Object sigRow[] = new String[7];
-        Object ak[][]=new String[4][7];
+        Object ak[][] = new String[4][7];
         System.out.println(allCourseContents.size());
-        int max=allCourseContents.size()/7;
-        for (int i = 0; i < max;i++) {
+        int max = allCourseContents.size() / 7;
+        for (int i = 0; i < max; i++) {
 
-            int period=Integer.parseInt(allCourseContents.get(7*i+6));
-            int date=6;
-            String s=allCourseContents.get(7*i+5);
+            int period = Integer.parseInt(allCourseContents.get(7 * i + 6));
+            int date = 6;
+            String s = allCourseContents.get(7 * i + 5);
             String j;
-            if(Objects.equals(s, "一"))
-                date=0;
+            if (Objects.equals(s, "一"))
+                date = 0;
             else if (Objects.equals(s, "二"))
-                date=1;
+                date = 1;
             else if (Objects.equals(s, "三"))
-                date=2;
+                date = 2;
             else if (Objects.equals(s, "四"))
-                date=3;
+                date = 3;
             else /*if (s=="五")*/
-                date=4;
-            if(period==1)
-                j=" 1-2节";
-            else if (period==2)
-                j=" 3-4节";
-            else if (period==3)
-                j=" 5-6节";
+                date = 4;
+            if (period == 1)
+                j = " 1-2节";
+            else if (period == 2)
+                j = " 3-4节";
+            else if (period == 3)
+                j = " 5-6节";
             else
-                j=" 7-8节";
+                j = " 7-8节";
             /*System.out.println(s);
             System.out.println(period);
             System.out.println(date);
             System.out.println("--------------------------------------");*/
-            if((period<5)&&(date<7))
-                ak[period-1][date]="<html>"+allCourseContents.get(7*i+3)+ "<br>" +"1-16周"+j+"<br>" + allCourseContents.get(7*i+4)+"</html>";
+            if ((period < 5) && (date < 7))
+                ak[period - 1][date] = "<html>" + allCourseContents.get(7 * i + 3) + "<br>" + "1-16周" + j + "<br>" + allCourseContents.get(7 * i + 4) + "</html>";
         }
 
 
         //zhengquede
         Object[][] courseinformation = {};
-        Object[] courselist = {"周一", "周二", "周三", "周四", "周五","周六","周日"};
+        Object[] courselist = {"周一", "周二", "周三", "周四", "周五", "周六", "周日"};
         DefaultTableModel model2;
         model2 = new DefaultTableModel(ak, courselist);
         table = new JTable();
@@ -149,9 +142,9 @@ public class Schedule extends JFrame{
         scrollPane2.setOpaque(false);
         scrollPane2.getViewport().setOpaque(false);
         scrollPane2.setViewportView(table);
-        table.setBounds(0, 0, 1157-165, 661 - 104);
+        table.setBounds(0, 0, 1157 - 165, 661 - 104);
         add(scrollPane2);
-        scrollPane2.setBounds(287, 104, 1157-287, 661 - 104);
+        scrollPane2.setBounds(287, 104, 1157 - 287, 661 - 104);
         scrollPane2.setVisible(true);
         setVisible(true);
 
@@ -166,7 +159,7 @@ public class Schedule extends JFrame{
         DefaultTableCellRenderer renderer = new DefaultTableCellRenderer();
         renderer.setOpaque(false);    //设置透明
         String[] Names = {
-                 "周一", "周二", "周三", "周四", "周五","周六","周日"};
+                "周一", "周二", "周三", "周四", "周五", "周六", "周日"};
         for (int i = 0; i < 7; i++) {
             table.getColumn(Names[i]).setCellRenderer(renderer);//单格渲染
             TableColumn column = table.getTableHeader().getColumnModel().getColumn(i);
@@ -198,12 +191,10 @@ public class Schedule extends JFrame{
         add(exitbutton);
         exitbutton.setOpaque(false);
     }
+
     protected void AddqxAvt(ActionEvent e) {
         dispose();
     }
-
-
-
 
 
 }

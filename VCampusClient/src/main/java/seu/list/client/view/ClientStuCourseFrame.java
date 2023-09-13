@@ -354,7 +354,7 @@ public class ClientStuCourseFrame extends JFrame implements ActionListener {
             });
 
 
-        } else if (e.getActionCommand() == "chozen") {
+        } else if (e.getActionCommand().equals("chozen")) {
             //this.setVisible(false);
             Schedule sch1 = new Schedule(this);
             /*Message clientReq = new Message();//新建申请用于交换
@@ -366,7 +366,7 @@ public class ClientStuCourseFrame extends JFrame implements ActionListener {
             Message rec = client.sendRequestToServer(clientReq);
 
             display(rec);*/
-        } else if (e.getActionCommand() == "check") {
+        } else if (e.getActionCommand().equals("check")) {
             if (!Objects.equals(jtf1.getText(), "")) {
                 Message clientReq = new Message();//新建申请用于交换
                 clientReq.setModuleType(ModuleType.Course);
