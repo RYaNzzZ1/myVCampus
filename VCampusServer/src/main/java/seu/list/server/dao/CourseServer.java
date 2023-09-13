@@ -42,9 +42,9 @@ public class CourseServer {
                 } else {
                     //String CourseId = this.mesFromClient.getContent().get(0);
                     String UserId = this.mesFromClient.getContent().get(1);
-                    boolean conflict = this.isconfilt(UserId, course.getCourseDate(), course.getCoursePeriod());
+                    boolean conflict = this.isconfilt(UserId, course.getCourseDate(), course.getCoursePeriod(), CourseId);
                     boolean chose = false;
-                    if (!conflict) {
+                    if (conflict == false) {
                         List<Course> allCourse; //= new LinkedList<Course>();
                         User user = new User();
                         user.setId(UserId);
@@ -59,7 +59,7 @@ public class CourseServer {
                                 break;
                             }
                         }
-                        if (!conflict) {
+                        if (conflict == false) {
                             this.mesToClient.setSeccess(this.sigAddCourse(CourseId, UserId));
                             break;
                         }
@@ -84,12 +84,12 @@ public class CourseServer {
                 allCourse = user.getCourses();
                 boolean f = false;
                 for (int i = 0; i < allCourse.size(); i++) {
-                    if (allCourse.get(i).getCourseID().equals(CourseId)) {
+                    if (allCourse.get(i).getCourseID() == CourseId) {
                         f = true;
                         break;
                     }
                 }
-                if (!f) {
+                if (f = false) {
                     this.mesToClient.setSeccess(false);
                     this.mesToClient.setErrorMessage("Invalid operation");
                 } else {
@@ -113,9 +113,9 @@ public class CourseServer {
             case MessageType.REQ_REMOVE_LESSON: {
                 System.out.println("serving REQ_REMOVE_LESSON");
                 System.out.println("removing.....");
-                String courseName = this.mesFromClient.getContent().get(2);
+                String courseId = this.mesFromClient.getContent().get(2);
 
-                this.mesToClient.setSeccess(this.genRemoveCourse(courseName));
+                this.mesToClient.setSeccess(this.genRemoveCourse(courseId));
                 System.out.println("REQ_REMOVE_LESSON finished");
                 break;
             }
@@ -148,7 +148,7 @@ public class CourseServer {
                 Iterator<Course> iteAllCourse = allCourse.iterator();
                 while (iteAllCourse.hasNext()) {
                     sigCourseContent = iteAllCourse.next().getContent();
-                    for (int i = 0; i <= 6; i++) {
+                    for (int i = 0; i < 8; i++) {
                         allCourseContent.add(sigCourseContent.get(i));
                     }
                 }
@@ -160,22 +160,24 @@ public class CourseServer {
             case MessageType.REQ_STU_ALL_CHOOOSE: {
                 System.out.println("serving REQ_STU_ALL_CHOOOSE");
                 System.out.println("grabbing......");
+                //�������и�ѧ����ѡ�γ�
                 Vector<String> sigCourseContent = new Vector<String>();
                 Vector<String> allCourseContent = new Vector<String>();
-                List<Course> allCourse;
+                List<Course> allCourse; //= new LinkedList<Course>();
                 User user = new User();
                 user.setId(String.valueOf(this.mesFromClient.getData()));
                 allCourse = user.getCourses();
                 System.out.println("课程表的allcourse：" + allCourse);
-                for (Course course : allCourse) {
-                    sigCourseContent = course.getContent();
+                Iterator<Course> iteAllCourse = allCourse.iterator();
+                while (iteAllCourse.hasNext()) {
+                    sigCourseContent = iteAllCourse.next().getContent();
                     if (sigCourseContent != null)
                         for (int i = 0; i <= 7; i++) {
                             allCourseContent.add(sigCourseContent.get(i));
                         }
 
                 }
-                this.mesToClient.setContent(allCourseContent);
+                this.mesToClient.setData(allCourseContent);
                 System.out.println("REQ_STU_ALL_CHOOOSE finished");
                 break;
             }
@@ -203,13 +205,15 @@ public class CourseServer {
             return null;
     }
 
-    public boolean isconfilt(String uID, String week, String period) {
-        String sql = "select * from tb_stc where uID = ? and week = ? and period = ?";
-        String[] paras = new String[3];
+    public boolean isconfilt(String uID, String Date, String period, String cID) {
+        String sql = "select * from tb_stc where uID = ? and CourseDate = ? and CoursePeriod = ? and not cID = ?";
+        String[] paras = new String[4];
         paras[0] = uID;
-        paras[1] = week;
+        paras[1] = Date;
         paras[2] = period;
-        return new SqlHelper().sqlConflictCheck(sql, paras);
+        paras[3] = cID;
+        boolean flag = new SqlHelper().sqlConflictCheck(sql, paras);
+        return flag;
     }
 
     public List<Course> getAllCourse() {
@@ -261,14 +265,14 @@ public class CourseServer {
         return new SqlHelper().sqlUpdate(sql1, paras);
     }
 
-    public boolean genRemoveCourse(String courseName) {
+    public boolean genRemoveCourse(String courseId) {
         // TODO Auto-generated method stub
-        String sql = "delete from tb_Class where courseName = ?";
+        String sql = "delete from tb_Class where cID = ?";
         String[] paras = new String[1];
-        paras[0] = courseName;
+        paras[0] = courseId;
         System.out.println("课程名是：" + paras[0]);
         //学生选课同步删除
-        String sql1 = "delete from tb_Stc where courseName = ?";
+        String sql1 = "delete from tb_Stc where cID = ?";
         new SqlHelper().sqlUpdate(sql1, paras);
 
         return new SqlHelper().sqlUpdate(sql, paras);
