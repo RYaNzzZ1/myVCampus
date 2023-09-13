@@ -17,9 +17,7 @@ public class SqlHelper {
     private static final String ACCESS_DRIVER = "net.ucanaccess.jdbc.UcanaccessDriver";
     private static String url;
 
-
     static {
-        // String dbpath = SqlHelper.class.getClassLoader().getResource("vCampus.accdb").getPath();
         String dbpath = "vCampus.accdb";
         url = "jdbc:ucanaccess://" + dbpath;
     }
@@ -138,7 +136,6 @@ public class SqlHelper {
         }
         return courses;
     }
-
     public List<Chat> sqlChatQuery(String sql, String[] paras) {
         // TODO Auto-generated method stub
         PreparedStatement ps = null;
@@ -243,5 +240,40 @@ public class SqlHelper {
             }
         }
         return students;
+    }
+
+    public boolean sqlConflictCheck(String sql, String[] paras) {
+        PreparedStatement ps = null;
+        Connection ct = null;
+        ResultSet rs = null;
+        List<Course> courses = null;
+        try {
+            Class.forName(ACCESS_DRIVER);
+            ct = DriverManager.getConnection(url, user, passwd);
+            ps = ct.prepareStatement(sql);
+            for (int i = 0; i < paras.length; i++) {
+                ps.setString(i + 1, paras[i]);
+            }
+            rs = ps.executeQuery();
+            courses = DAOUtil.CourseResultSet2List(rs);
+            System.out.println(courses);
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (rs != null)
+                    rs.close();
+                if (ps != null)
+                    ps.close();
+                if (ct != null)
+                    ct.close();
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        if(courses!=null&&courses.size()>=1)
+            return true;
+        return false;
     }
 }

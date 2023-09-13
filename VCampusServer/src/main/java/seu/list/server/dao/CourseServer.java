@@ -34,13 +34,40 @@ public class CourseServer {
                 String CourseId = this.mesFromClient.getContent().get(0);
                 System.out.println("CourseID为" + CourseId);
                 course = this.searchCourseByID(CourseId);
-                if (course == null)
+                if (course == null) {
                     this.mesToClient.setSeccess(false);
+                    this.mesToClient.setErrorMessage("Null");
+                    break;
+                }
                 else {
                     //String CourseId = this.mesFromClient.getContent().get(0);
                     String UserId = this.mesFromClient.getContent().get(1);
-
-                    this.mesToClient.setSeccess(this.sigAddCourse(CourseId, UserId));
+                    boolean conflict = this.isconfilt(UserId,course.getCourseDate(),course.getCoursePeriod());
+                    boolean chose = false;
+                    if(conflict==false) {
+                        List<Course> allCourse; //= new LinkedList<Course>();
+                        User user = new User();
+                        user.setId(UserId);
+                        allCourse = user.getCourses();
+                        String prefix = CourseId.substring(0,5);
+                        for(int i=0;i<allCourse.size();i++){
+                            String cid = allCourse.get(i).getCourseID();
+                            if(cid.contains(prefix)) {
+                                conflict = true;
+                                if(cid.equals(CourseId))
+                                    chose=true;
+                                break;
+                            }
+                        }
+                        if(conflict==false) {
+                            this.mesToClient.setSeccess(this.sigAddCourse(CourseId, UserId));
+                            break;
+                        }
+                    }
+                    this.mesToClient.setSeccess(false);
+                    this.mesToClient.setErrorMessage("Course conflict.");
+                    if(chose)
+                        this.mesToClient.setErrorMessage("Chose");
                 }
                 System.out.println("REQ_STU_ADD_LESSON finished");
                 break;
@@ -51,8 +78,25 @@ public class CourseServer {
                 String CourseId = this.mesFromClient.getContent().get(0);
                 String UserId = this.mesFromClient.getContent().get(1);
 
-                this.mesToClient.setSeccess(this.sigRemoveCourse(CourseId, UserId));
-                System.out.println("REQ_STU_REMOVE_LESSON finshed");
+                List<Course> allCourse; //= new LinkedList<Course>();
+                User user = new User();
+                user.setId(String.valueOf(this.mesFromClient.getData()));
+                allCourse = user.getCourses();
+                boolean f = false;
+                for(int i=0;i<allCourse.size();i++){
+                    if(allCourse.get(i).getCourseID()==CourseId) {
+                        f = true;
+                        break;
+                    }
+                }
+                if(f=false){
+                    this.mesToClient.setSeccess(false);
+                    this.mesToClient.setErrorMessage("Invalid operation");
+                }
+                else {
+                    this.mesToClient.setSeccess(this.sigRemoveCourse(CourseId, UserId));
+                    System.out.println("REQ_STU_REMOVE_LESSON finshed");
+                }
                 break;
             }
             case MessageType.REQ_ADD_LESSON: {
@@ -122,7 +166,7 @@ public class CourseServer {
                 Vector<String> allCourseContent = new Vector<String>();
                 List<Course> allCourse; //= new LinkedList<Course>();
                 User user = new User();
-                user.setContent(this.mesFromClient.getContent());
+                user.setId(String.valueOf(this.mesFromClient.getData()));
                 allCourse = user.getCourses();
                 Iterator<Course> iteAllCourse = allCourse.iterator();
                 while (iteAllCourse.hasNext()) {
@@ -133,7 +177,7 @@ public class CourseServer {
                         }
 
                 }
-                this.mesToClient.setContent(allCourseContent);
+                this.mesToClient.setData(allCourseContent);
                 System.out.println("REQ_STU_ALL_CHOOOSE finished");
                 break;
             }
@@ -161,9 +205,18 @@ public class CourseServer {
             return null;
     }
 
+    public boolean isconfilt(String uID,String week,String period){
+        String sql = "select * from tb_stc where uID = ? and week = ? and period = ?";
+        String[]paras = new String[3];
+        paras[0]=uID;
+        paras[1]=week;
+        paras[2]=period;
+        boolean flag = new SqlHelper().sqlConflictCheck(sql,paras);
+        return flag;
+    }
     public List<Course> getAllCourse() {
         // TODO Auto-generated method stub
-        String sql = "select * from tb_Class";
+        String sql = "select * from tb_Class where not cID = '-1'";
         return new SqlHelper().sqlCourseQuery(sql, new String[]{});
     }
 
@@ -174,12 +227,14 @@ public class CourseServer {
         paras[0] = courseID;
         List<Course> thiscourse = new SqlHelper().sqlCourseQuery(sql, paras);
 
-        String[] paras2 = new String[4];
+        String[] paras2 = new String[6];
         paras2[0] = uID + courseID;
         paras2[1] = uID;
         paras2[2] = courseID;
         paras2[3] = thiscourse.get(0).getCourseName();
-        String sql2 = "insert into tb_Stc(scID,uID,cID,courseName) values(?,?,?,?)";
+        paras2[4] = thiscourse.get(0).getCourseDate();
+        paras2[5] = thiscourse.get(0).getCoursePeriod();
+        String sql2 = "insert into tb_Stc(scID,uID,cID,courseName,CourseDate,CoursePeriod) values(?,?,?,?,?,?)";
 
         return new SqlHelper().sqlUpdate(sql2, paras2);
     }
@@ -195,18 +250,34 @@ public class CourseServer {
 
     public boolean genAddCourse(Course course) {
         // TODO Auto-generated method stub
-        String sql = "insert into tb_Class(cID,Semester,CourseMajor,courseName,teacherID,CourseState,CourseType,CourseDate,CoursePeriod) values (?,?,?,?,?,?,?,?,?)";
-        String[] paras = new String[9];
+        String sql1 = "insert into tb_Class(cID,Semester,CourseMajor,courseName,teacherID,CourseType,CourseDate,CoursePeriod) values (?,?,?,?,?,?,?,?)";
+        String sql2 = "select * from tb_Class where cID=?";
+        String[] paras = new String[8];
         paras[1] = course.getSemester();
         paras[0] = course.getCourseID();
         paras[2] = course.getCourseMajor();
         paras[3] = course.getCourseName();
         paras[4] = course.getTeacherID();
-        paras[5] = course.getCourseState();
-        paras[6] = course.getCourseType();
-        paras[7] = course.getCourseDate();
-        paras[8] = course.getCoursePeriod();
-        return new SqlHelper().sqlUpdate(sql, paras);
+        //paras[5] = course.getCourseState();
+        paras[5] = course.getCourseType();
+        paras[6] = course.getCourseDate();
+        paras[7] = course.getCoursePeriod();
+        String[] paras2 = new String[1];
+        paras2[0] = paras[0];
+        List<Course> cList = new SqlHelper().sqlCourseQuery(sql2, paras2);
+        if (cList == null) {
+            String sql3 = "select * from tb_Class where cID =?";
+            String[] paras3 = new String[1];
+            paras3[0] = "-1";
+            List<Course> sum = new SqlHelper().sqlCourseQuery(sql3, paras3);
+            String courseSum = String.valueOf(Integer.parseInt(sum.get(0).getCourseType()) + 1);
+            String sql4 = "update tb_Class from set =? where cID =?";
+            String[] paras4 = new String[2];
+            paras4[0] = courseSum;
+            paras4[1] = "-1";
+            new SqlHelper().sqlUpdate(sql4, paras4);
+        }
+        return new SqlHelper().sqlUpdate(sql1, paras);
     }
 
     public boolean genRemoveCourse(String courseName) {
