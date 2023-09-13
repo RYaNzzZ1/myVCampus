@@ -55,17 +55,6 @@ public class ClientCourseFrame extends JFrame implements ActionListener {
         jFrame.setSize(1280, 755);
         jFrame.setResizable(false);
         jFrame.setLayout(null);
-        //2.绘制退出按钮
-        //得到鼠标的坐标（用于推算对话框应该摆放的坐标)
-    /* backgroundImageLabel.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-				int x = e.getX();
-				int y = e.getY();
-				System.out.println("鼠标点击位置：X=" + x + ", Y=" + y);
-			}
-        });
-*/
         //下拉拉列表
         String[] seOp = {"全部", "课程号"};
 

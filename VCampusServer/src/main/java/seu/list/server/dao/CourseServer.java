@@ -7,18 +7,12 @@ import seu.list.common.User;
 import seu.list.server.db.SqlHelper;
 
 import java.sql.SQLException;
-import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Vector;
 
 public class CourseServer {
-
     private Message mesFromClient;
     private Message mesToClient = new Message();
-
-    public CourseServer() {
-    }
 
     public CourseServer(Message mesFromClient) {
         this.mesFromClient = mesFromClient;
@@ -40,18 +34,17 @@ public class CourseServer {
                     this.mesToClient.setErrorMessage("Null");
                     break;
                 } else {
-                    //String CourseId = this.mesFromClient.getContent().get(0);
                     String UserId = this.mesFromClient.getContent().get(1);
-                    boolean conflict = this.isconfilt(UserId, course.getCourseDate(), course.getCoursePeriod(), CourseId);
+                    boolean conflict = this.isConflict(UserId, course.getCourseDate(), course.getCoursePeriod(), CourseId);
                     boolean chose = false;
-                    if (conflict == false) {
-                        List<Course> allCourse; //= new LinkedList<Course>();
+                    if (!conflict) {
+                        List<Course> allCourse;
                         User user = new User();
                         user.setId(UserId);
                         allCourse = user.getCourses();
                         String prefix = CourseId.substring(0, 5);
-                        for (int i = 0; i < allCourse.size(); i++) {
-                            String cid = allCourse.get(i).getCourseID();
+                        for (Course value : allCourse) {
+                            String cid = value.getCourseID();
                             if (cid.contains(prefix)) {
                                 conflict = true;
                                 if (cid.equals(CourseId))
@@ -59,7 +52,7 @@ public class CourseServer {
                                 break;
                             }
                         }
-                        if (conflict == false) {
+                        if (!conflict) {
                             this.mesToClient.setSeccess(this.sigAddCourse(CourseId, UserId));
                             break;
                         }
@@ -78,18 +71,18 @@ public class CourseServer {
                 String CourseId = this.mesFromClient.getContent().get(0);
                 String UserId = this.mesFromClient.getContent().get(1);
 
-                List<Course> allCourse; //= new LinkedList<Course>();
+                List<Course> allCourse;
                 User user = new User();
                 user.setId(String.valueOf(this.mesFromClient.getData()));
                 allCourse = user.getCourses();
                 boolean f = false;
-                for (int i = 0; i < allCourse.size(); i++) {
-                    if (allCourse.get(i).getCourseID() == CourseId) {
+                for (Course course : allCourse) {
+                    if (course.getCourseID().equals(CourseId)) {
                         f = true;
                         break;
                     }
                 }
-                if (f = false) {
+                if (!f) {
                     this.mesToClient.setSeccess(false);
                     this.mesToClient.setErrorMessage("Invalid operation");
                 } else {
@@ -106,7 +99,6 @@ public class CourseServer {
                 course.setContent(this.mesFromClient.getContent());
 
                 this.mesToClient.setSeccess(this.genAddCourse(course));
-                //this.mesToClient.setData(this.genAddCourse(course));
                 System.out.println("REQ_ADD_LESSON finished");
                 break;
             }
@@ -126,28 +118,23 @@ public class CourseServer {
                 String courseID = this.mesFromClient.getContent().get(1);
                 System.out.println("CourseID为" + courseID);
                 course = this.searchCourseByID(courseID);
-                //System.out.println(course.getContent());
                 if (course == null) this.mesToClient.setSeccess(false);
                 else {
                     this.mesToClient.setContent(course.getContent());
                     this.mesToClient.setSeccess(true);
                 }
 
-
-                //System.out.println(this.mesToClient.getContent());
                 System.out.println("REQ_SEARCH_LESSON finished");
                 break;
             }
             case MessageType.REQ_SHOW_ALL_LESSON: {
                 System.out.println("serving REQ_SHOW_ALL_LESSON");
                 System.out.println("grabbing.....");
-                Vector<String> sigCourseContent = new Vector<String>();
-                Vector<String> allCourseContent = new Vector<String>();
-                List<Course> allCourse = new LinkedList<Course>();
-                allCourse = this.getAllCourse();
-                Iterator<Course> iteAllCourse = allCourse.iterator();
-                while (iteAllCourse.hasNext()) {
-                    sigCourseContent = iteAllCourse.next().getContent();
+                Vector<String> sigCourseContent = new Vector<>();
+                Vector<String> allCourseContent = new Vector<>();
+                List<Course> allCourse = this.getAllCourse();
+                for (Course course : allCourse) {
+                    sigCourseContent = course.getContent();
                     for (int i = 0; i < 8; i++) {
                         allCourseContent.add(sigCourseContent.get(i));
                     }
@@ -160,22 +147,19 @@ public class CourseServer {
             case MessageType.REQ_STU_ALL_CHOOOSE: {
                 System.out.println("serving REQ_STU_ALL_CHOOOSE");
                 System.out.println("grabbing......");
-                //�������и�ѧ����ѡ�γ�
-                Vector<String> sigCourseContent = new Vector<String>();
-                Vector<String> allCourseContent = new Vector<String>();
-                List<Course> allCourse; //= new LinkedList<Course>();
+                Vector<String> sigCourseContent = new Vector<>();
+                Vector<String> allCourseContent = new Vector<>();
+                List<Course> allCourse;
                 User user = new User();
                 user.setId(String.valueOf(this.mesFromClient.getData()));
                 allCourse = user.getCourses();
                 System.out.println("课程表的allcourse：" + allCourse);
-                Iterator<Course> iteAllCourse = allCourse.iterator();
-                while (iteAllCourse.hasNext()) {
-                    sigCourseContent = iteAllCourse.next().getContent();
+                for (Course course : allCourse) {
+                    sigCourseContent = course.getContent();
                     if (sigCourseContent != null)
                         for (int i = 0; i <= 7; i++) {
                             allCourseContent.add(sigCourseContent.get(i));
                         }
-
                 }
                 this.mesToClient.setData(allCourseContent);
                 System.out.println("REQ_STU_ALL_CHOOOSE finished");
@@ -186,7 +170,7 @@ public class CourseServer {
         }
     }
 
-    public Message getMesToClient() { // �����޸ģ��������Ҫ�����������
+    public Message getMesToClient() {
         System.out.println("mesToClient的内容是" + this.mesToClient.getContent());
         return this.mesToClient;
     }
@@ -205,15 +189,14 @@ public class CourseServer {
             return null;
     }
 
-    public boolean isconfilt(String uID, String Date, String period, String cID) {
+    public boolean isConflict(String uID, String Date, String period, String cID) {
         String sql = "select * from tb_stc where uID = ? and CourseDate = ? and CoursePeriod = ? and not cID = ?";
         String[] paras = new String[4];
         paras[0] = uID;
         paras[1] = Date;
         paras[2] = period;
         paras[3] = cID;
-        boolean flag = new SqlHelper().sqlConflictCheck(sql, paras);
-        return flag;
+        return new SqlHelper().sqlConflictCheck(sql, paras);
     }
 
     public List<Course> getAllCourse() {
