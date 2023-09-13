@@ -12,6 +12,8 @@ import javax.swing.table.TableColumn;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.IOException;
 import java.net.Socket;
 import java.sql.SQLException;
@@ -33,7 +35,7 @@ public class ClientStuCourseFrame extends JFrame implements ActionListener {
      *
      */
     Font f1 = new Font("华文行楷", Font.PLAIN + Font.BOLD, 30);
-    private String userID;
+    public String userID;
 
     /**
      * create the frame
@@ -51,7 +53,7 @@ public class ClientStuCourseFrame extends JFrame implements ActionListener {
         jframe.setLayout(null);
 
         //绘制背景图片
-        JLabel backgroundImageLabel = new JLabel(new ImageIcon(getClass().getClassLoader().getResource("imgs/ClientStuCourseFrame.png")));
+        JLabel backgroundImageLabel = new JLabel(new ImageIcon("VCampusClient/src/main/resources/ClientStuCourseFrame.PNG"));
         Toolkit k = Toolkit.getDefaultToolkit();
         Dimension d = k.getScreenSize();
         setBounds(d.width / 2 - 640, d.height / 2 - 360, 1280, 720);
@@ -61,8 +63,8 @@ public class ClientStuCourseFrame extends JFrame implements ActionListener {
         jframe.setLayout(null);
 
         //2.绘制退出按钮
-        //得到鼠标的坐标（用于推算对话框应该摆放的坐标)
-     /*backgroundImageLabel.addMouseListener(new MouseAdapter() {
+        //得到鼠标的坐标（用于推算对话框应该摆放的坐标）
+    /*   backgroundImageLabel.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
 				int x = e.getX();
@@ -78,7 +80,7 @@ public class ClientStuCourseFrame extends JFrame implements ActionListener {
         jframe.add(jtf1);
         jtf1.setOpaque(false);
         jtf1.setBorder(new EmptyBorder(0, 0, 0, 0));
-//		"课程编号","学年学期","课程","专业","授课教师","状态","类型"
+
         Object[][] courseinformation = {};
         jtf2 = new JTextField();
         jtf2.setFont(f1);
@@ -86,7 +88,7 @@ public class ClientStuCourseFrame extends JFrame implements ActionListener {
         jtf2.setBorder(new EmptyBorder(0, 0, 0, 0));
 
         //设置表格
-        Object[] courselist = {"学年学期", "课程编号", "专业", "课程", "授课教师", "状态", "类型"};
+        Object[] courselist = {"学年学期", "课程编号", "专业", "课程", "授课教师", "星期", "时间段"};
         DefaultTableModel model;
         model = new DefaultTableModel(courseinformation, courselist);
         Message mes = new Message();
@@ -131,7 +133,7 @@ public class ClientStuCourseFrame extends JFrame implements ActionListener {
         jtb1.setAutoResizeMode(JTable.AUTO_RESIZE_SUBSEQUENT_COLUMNS);
         DefaultTableCellRenderer renderer = new DefaultTableCellRenderer();
         renderer.setOpaque(false);    //设置透明
-        String[] Names = {"学年学期", "课程编号", "专业", "课程", "授课教师", "状态", "类型"};
+        String[] Names = {"学年学期", "课程编号", "专业", "课程", "授课教师", "星期", "时间段"};
         for (int i = 0; i < 7; i++) {
             jtb1.getColumn(Names[i]).setCellRenderer(renderer);//单格渲染
             TableColumn column = jtb1.getTableHeader().getColumnModel().getColumn(i);
@@ -162,9 +164,9 @@ public class ClientStuCourseFrame extends JFrame implements ActionListener {
         jframe.add(jb4);
 
 
-        jb2 = new JButton("已选课程查询");
+        jb2 = new JButton("课程表");
         jb2.setFont(f1);
-        jb2.setBounds(134, 439, 1026 - 779, 642 - 592);
+        jb2.setBounds(113, 441, 260 - 113, 495 - 441);
         jframe.add(jb2);
 
         jb3 = new JButton("课程查询");
@@ -213,7 +215,7 @@ public class ClientStuCourseFrame extends JFrame implements ActionListener {
         jtb1.setModel(new DefaultTableModel(
                 allCourseTable,
                 new String[]{
-                        "学年学期", "课程编号", "专业", "课程", "授课教师", "状态", "类型"
+                        "学年学期", "课程编号", "专业", "课程", "授课教师", "星期", "时间段"
                 }
         ));
         jtb1.getColumnModel().getColumn(0).setPreferredWidth(161);
@@ -241,7 +243,7 @@ public class ClientStuCourseFrame extends JFrame implements ActionListener {
         jtb1.setAutoResizeMode(JTable.AUTO_RESIZE_SUBSEQUENT_COLUMNS);
         DefaultTableCellRenderer renderer = new DefaultTableCellRenderer();
         renderer.setOpaque(false);    //设置透明
-        String[] Names = {"学年学期", "课程编号", "专业", "课程", "授课教师", "状态", "类型"};
+        String[] Names = {"学年学期", "课程编号", "专业", "课程", "授课教师", "星期", "时间段"};
         for (int i = 0; i < 7; i++) {
             jtb1.getColumn(Names[i]).setCellRenderer(renderer);//单格渲染
             TableColumn column = jtb1.getTableHeader().getColumnModel().getColumn(i);
@@ -269,7 +271,7 @@ public class ClientStuCourseFrame extends JFrame implements ActionListener {
             tem.setLayout(null);
 
             //绘制背景图片
-            JLabel backgroundImageLabel = new JLabel(new ImageIcon(getClass().getClassLoader().getResource("imgs/StudentSelectCourse.jpg")));
+            JLabel backgroundImageLabel = new JLabel(new ImageIcon("VCampusClient/src/main/resources/StudentSelectCourse.jpg"));
             Toolkit k = Toolkit.getDefaultToolkit();
             Dimension d = k.getScreenSize();
             tem.setBounds(d.width / 2 - 825 / 2, d.height / 2 - 415 / 2, 825, 415 + 25);
@@ -278,7 +280,7 @@ public class ClientStuCourseFrame extends JFrame implements ActionListener {
             tem.setLayout(null);
             tem.setVisible(true);
             //2.绘制退出按钮
-            //得到鼠标的坐标（用于推算对话框应该摆放的坐标)
+            //得到鼠标的坐标（用于推算对话框应该摆放的坐标）
      /*backgroundImageLabel.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -286,8 +288,8 @@ public class ClientStuCourseFrame extends JFrame implements ActionListener {
 				int y = e.getY();
 				System.out.println("鼠标点击位置：X=" + x + ", Y=" + y);
 			}
-        });
-*/
+        });*/
+
 
             jtf2.setBounds(260, 154, 616 - 260, 197 - 154);
             tem.add(jtf2);
@@ -350,7 +352,8 @@ public class ClientStuCourseFrame extends JFrame implements ActionListener {
 
         } else if (e.getActionCommand() == "chozen") {
             //this.setVisible(false);
-            Message clientReq = new Message();//新建申请用于交换
+            Schedule sch1 = new Schedule(this);
+            /*Message clientReq = new Message();//新建申请用于交换
             User user = new User();
             user.setId(userID);
             clientReq.setContent(user.getContent());
@@ -358,7 +361,7 @@ public class ClientStuCourseFrame extends JFrame implements ActionListener {
             clientReq.setMessageType("REQ_STU_ALL_CHOOOSE");
             Message rec = client.sendRequestToServer(clientReq);
 
-            display(rec);
+            display(rec);*/
         } else if (e.getActionCommand() == "check") {
             if (!Objects.equals(jtf1.getText(), "")) {
                 Message clientReq = new Message();//新建申请用于交换
@@ -377,7 +380,7 @@ public class ClientStuCourseFrame extends JFrame implements ActionListener {
             } else {
                 //设置表格
                 Object[][] courseinformation = {};
-                Object[] courselist = {"学年学期", "课程编号", "专业", "课程", "授课教师", "状态", "类型"};
+                Object[] courselist = {"学年学期", "课程编号", "专业", "课程", "授课教师", "星期", "时间段"};
                 DefaultTableModel model;
                 model = new DefaultTableModel(courseinformation, courselist);
                 Message mes = new Message();
@@ -407,7 +410,7 @@ public class ClientStuCourseFrame extends JFrame implements ActionListener {
                 jtb1.setAutoResizeMode(JTable.AUTO_RESIZE_SUBSEQUENT_COLUMNS);
                 DefaultTableCellRenderer renderer = new DefaultTableCellRenderer();
                 renderer.setOpaque(false);    //设置透明
-                String[] Names = {"学年学期", "课程编号", "专业", "课程", "授课教师", "状态", "类型"};
+                String[] Names = {"学年学期", "课程编号", "专业", "课程", "授课教师", "星期", "时间段"};
                 for (int i = 0; i < 7; i++) {
                     jtb1.getColumn(Names[i]).setCellRenderer(renderer);//单格渲染
                     TableColumn column = jtb1.getTableHeader().getColumnModel().getColumn(i);
@@ -432,7 +435,7 @@ public class ClientStuCourseFrame extends JFrame implements ActionListener {
             tem.setLayout(null);
 
             //绘制背景图片
-            JLabel backgroundImageLabel = new JLabel(new ImageIcon(getClass().getClassLoader().getResource("imgs/StudentCancekCourse.jpg")));
+            JLabel backgroundImageLabel = new JLabel(new ImageIcon("VCampusClient/src/main/resources/StudentCancekCourse.jpg"));
             Toolkit k = Toolkit.getDefaultToolkit();
             Dimension d = k.getScreenSize();
             tem.setBounds(d.width / 2 - 827 / 2, d.height / 2 - 381 / 2, 827, 381 + 25);
@@ -442,7 +445,7 @@ public class ClientStuCourseFrame extends JFrame implements ActionListener {
             tem.setVisible(true);
 
             //2.绘制退出按钮
-            //得到鼠标的坐标（用于推算对话框应该摆放的坐标)
+            //得到鼠标的坐标（用于推算对话框应该摆放的坐标）
      /*backgroundImageLabel.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
