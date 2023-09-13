@@ -204,8 +204,8 @@ public class Shop_StudentFrame {
         frame.add(btnNewButton_2);
         btnNewButton_2.addActionListener(event->
         {
-            JFrame Car=new JFrame("购物车");
-            JLabel back = new JLabel(new ImageIcon("VCampusClient/src/main/resources/ShaopCar.jpg"));
+            JFrame Car = new JFrame("购物车");
+            JLabel back = new JLabel(new ImageIcon(getClass().getClassLoader().getResource("imgs/ShaopCar.jpg")));
             Car.setBounds(d.width / 2 - 441, d.height / 2 - 649/2, 882,649+25);
             back.setBounds(0, 0, 882,649);
             Car.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
@@ -245,10 +245,10 @@ public class Shop_StudentFrame {
             add.setOpaque(false);
             add.addActionListener(event2->
             {
-                JFrame GoodsAdd=new JFrame("商品购入修改");
-                JLabel backadd = new JLabel(new ImageIcon("VCampusClient/src/main/resources/GoodsAdd.jpg"));
-                GoodsAdd.setBounds(d.width / 2 - 845/2, d.height / 2 - 588/2, 845,588+25);
-                backadd.setBounds(0, 0, 845,588);
+                JFrame GoodsAdd = new JFrame("商品购入");
+                JLabel backadd = new JLabel(new ImageIcon(getClass().getClassLoader().getResource("imgs/GoodsAdd.jpg")));
+                GoodsAdd.setBounds(d.width / 2 - 845 / 2, d.height / 2 - 588 / 2, 845, 588 + 25);
+                backadd.setBounds(0, 0, 845, 588);
                 GoodsAdd.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
                 GoodsAdd.setResizable(false);
                 GoodsAdd.setLayout(null);
@@ -396,8 +396,8 @@ public class Shop_StudentFrame {
             motify.setOpaque(false);
             motify.addActionListener(dd->
             {
-                JFrame GoodsAdd=new JFrame("商品修改");
-                JLabel backadd = new JLabel(new ImageIcon("VCampusClient/src/main/resources/GoodsMotify.jpg"));
+                JFrame GoodsAdd = new JFrame("商品修改");
+                JLabel backadd = new JLabel(new ImageIcon(getClass().getClassLoader().getResource("imgs/GoodsMotify.jpg")));
                 GoodsAdd.setBounds(d.width / 2 - 845/2, d.height / 2 - 588/2, 845,588+25);
                 backadd.setBounds(0, 0, 845,588);
                 GoodsAdd.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);

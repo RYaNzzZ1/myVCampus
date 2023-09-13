@@ -12,12 +12,17 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.Dialog.ModalExclusionType;
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Vector;
 
@@ -42,11 +47,11 @@ public class ClassStudentClient extends JFrame {
     private MainMenu Mainmenu = null;
 
     @SuppressWarnings("unchecked")
-    public ClassStudentClient(String id, String pwd, MainMenu mainmenu) throws IOException {
+    public ClassStudentClient(String id, String pwd, MainMenu mainmenu) throws IOException, URISyntaxException {
         this.Mainmenu = mainmenu;
 
         //1.设置背景图片
-        JLabel backgroundImageLabel = new JLabel(new ImageIcon("VCampusClient/src/main/resources/ClassStudentClientnew.png"));
+        JLabel backgroundImageLabel = new JLabel(new ImageIcon(getClass().getClassLoader().getResource("imgs/ClassStudentClientnew.png")));
         Toolkit k = Toolkit.getDefaultToolkit();
         Dimension d = k.getScreenSize();
         setBounds(d.width / 2 - 441, d.height / 2 - 635 / 2, 882, 670);
@@ -245,7 +250,7 @@ public class ClassStudentClient extends JFrame {
         int newWidth =  backadd.getWidth();
         int newHeight =  backadd.getHeight();
         // 监听窗口大小变化事件，调整图像大小
-        BufferedImage originalImage = ImageIO.read(new File("VCampusClient/src/main/resources/1.png"));
+        BufferedImage originalImage = ImageIO.read(new File(getClass().getClassLoader().getResource("imgs/1.png").toURI()));
         Image scaledImage = originalImage.getScaledInstance(newWidth, newHeight, Image.SCALE_SMOOTH);
         final ImageIcon[][] imageIcon = {{new ImageIcon(scaledImage)}};
         backadd.setIcon(imageIcon[0][0]);
@@ -303,7 +308,7 @@ public class ClassStudentClient extends JFrame {
 
             }
         });
-        System.out.println(filePath);
+        System.out.println(Arrays.toString(filePath));
 
         //
 
@@ -344,7 +349,7 @@ public class ClassStudentClient extends JFrame {
                 JComboBox gender1 = new JComboBox();
                 gender1.addItem("男");
                 gender1.addItem("女");
-                if (thisStu.getStudentgender() == false) {
+                if (!thisStu.getStudentgender()) {
                     gender1.setSelectedIndex(1);
                 }
 

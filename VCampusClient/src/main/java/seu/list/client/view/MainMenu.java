@@ -10,6 +10,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.net.Socket;
+import java.net.URISyntaxException;
 import java.sql.SQLException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -281,7 +282,7 @@ public class MainMenu extends JFrame implements ActionListener {
             throw new RuntimeException(ex);
         } catch (SQLException ex) {
             throw new RuntimeException(ex);
-        } catch (IOException ex) {
+        } catch (IOException | URISyntaxException ex) {
             throw new RuntimeException(ex);
         }
     }

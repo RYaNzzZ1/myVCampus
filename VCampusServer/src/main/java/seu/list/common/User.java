@@ -152,7 +152,7 @@ public class User implements java.io.Serializable {
      * @return 在线状态
      */
     public boolean getState() {
-        return online == "1";
+        return online.equals("1");
     }
 
     /**
