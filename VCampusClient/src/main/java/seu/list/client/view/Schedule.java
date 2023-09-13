@@ -70,10 +70,12 @@ public class Schedule extends JFrame {
         Object[][] ak = new String[4][7];
         System.out.println(allCourseContents.size());
         int max = allCourseContents.size() / 8;
+        /*for(int i=0;i<allCourseContents.size();i++)
+            System.out.println(allCourseContents.get(i));*/
         for (int i = 0; i < max; i++) {
 
             int period = 0;
-            String p = allCourseContents.get(8 * i + 8);
+            String p = allCourseContents.get(8 * i + 5);
             int date = 6;
             if (Objects.equals(p, "1-2节"))
                 period = 0;
@@ -86,54 +88,32 @@ public class Schedule extends JFrame {
 
             String s = allCourseContents.get(8 * i + 7);
             String j;
-            if (Objects.equals(s, "一"))
+            if (Objects.equals(s, "周一"))
                 date = 0;
-            else if (Objects.equals(s, "二"))
+            else if (Objects.equals(s, "周二"))
                 date = 1;
-            else if (Objects.equals(s, "三"))
+            else if (Objects.equals(s, "周三"))
                 date = 2;
-            else if (Objects.equals(s, "四"))
+            else if (Objects.equals(s, "周四"))
                 date = 3;
-            else /*if (s=="五")*/
-                date = 4;
-            /*if (period == 1)
-                j = " 1-2节";
-            else if (period == 2)
-                j = " 3-4节";
-            else if (period == 3)
-                j = " 5-6节";
             else
-                j = " 7-8节";*/
+                date = 4;
+
             System.out.println(s);
             System.out.println(period);
             System.out.println(date);
             System.out.println("--------------------------------------");
             if ((period < 5) && (date < 7))
-                ak[period - 1][date] = "<html>" + allCourseContents.get(8 * i + 3) + "<br>" + "1-16周" + p + "<br>" + allCourseContents.get(7 * i + 4) + "</html>";
+                ak[period][date] = "<html>" + allCourseContents.get(8 * i + 3) + "<br>" + "1-16周" + p + "<br>" + allCourseContents.get(8 * i + 4) + "</html>";
         }
 
-
-        //zhengquede
+        //生成表格
         Object[][] courseinformation = {};
         Object[] courselist = {"周一", "周二", "周三", "周四", "周五", "周六", "周日"};
         DefaultTableModel model2;
         model2 = new DefaultTableModel(ak, courselist);
         table = new JTable();
         table.setModel(model2);
-
-
-
-/*
-        for (int i = 0; i < allCourseContents.size();i++) {
-            for (int j = 0; j < 7; j++) {
-                sigRow[j] = allCourseContents.get(i);
-
-            }
-            System.out.println("hhhhhhhhhhhhhhhhhhhhhhh");
-            System.out.println(allCourseContents.get(i));
-            model2.addRow(sigRow);
-        }*/
-
 
         //滚动框框位置调整
         scrollPane2 = new JScrollPane();

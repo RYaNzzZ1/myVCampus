@@ -86,7 +86,7 @@ public class ClientStuCourseFrame extends JFrame implements ActionListener {
         jtf2.setBorder(new EmptyBorder(0, 0, 0, 0));
 
         //设置表格
-        Object[] courselist = {"学年学期", "课程编号", "专业", "课程", "授课教师", "星期", "时间段"};
+        Object[] courselist = {"学年学期", "课程编号", "专业", "课程", "授课教师", "时间段","类型","星期" };
         DefaultTableModel model;
         model = new DefaultTableModel(courseinformation, courselist);
         Message mes = new Message();
@@ -98,9 +98,9 @@ public class ClientStuCourseFrame extends JFrame implements ActionListener {
         System.out.println(rec.getContent());
         Vector<String> allCourseContents = rec.getContent();
         System.out.println(allCourseContents.size());
-        Object sigRow[] = new String[7];
+        Object sigRow[] = new String[8];
         for (int i = 0; i < allCourseContents.size(); ) {
-            for (int j = 0; j < 7; j++) {
+            for (int j = 0; j < 8; j++) {
                 sigRow[j] = allCourseContents.get(i);
                 i++;
             }
@@ -131,8 +131,8 @@ public class ClientStuCourseFrame extends JFrame implements ActionListener {
         jtb1.setAutoResizeMode(JTable.AUTO_RESIZE_SUBSEQUENT_COLUMNS);
         DefaultTableCellRenderer renderer = new DefaultTableCellRenderer();
         renderer.setOpaque(false);    //设置透明
-        String[] Names = {"学年学期", "课程编号", "专业", "课程", "授课教师", "星期", "时间段"};
-        for (int i = 0; i < 7; i++) {
+        String[] Names = {"学年学期", "课程编号", "专业", "课程", "授课教师", "时间段","类型","星期"};
+        for (int i = 0; i < 8; i++) {
             jtb1.getColumn(Names[i]).setCellRenderer(renderer);//单格渲染
             TableColumn column = jtb1.getTableHeader().getColumnModel().getColumn(i);
             column.setHeaderRenderer(renderer);//表头渲染
@@ -202,18 +202,18 @@ public class ClientStuCourseFrame extends JFrame implements ActionListener {
 
     public void display(Message rec) {
         Vector<String> allCourseInfor = rec.getContent();
-        int rowNumber = allCourseInfor.size() / 7;
-        String[][] allCourseTable = new String[rowNumber][7];
+        int rowNumber = allCourseInfor.size() / 8;
+        String[][] allCourseTable = new String[rowNumber][8];
         int storingPlace = 0;
         for (int i = 0; i < rowNumber; i++) {
-            for (int j = 0; j < 7; j++)
+            for (int j = 0; j < 8; j++)
                 allCourseTable[i][j] = allCourseInfor.get(storingPlace++);
         }
         jtb1 = new JTable();
         jtb1.setModel(new DefaultTableModel(
                 allCourseTable,
                 new String[]{
-                        "学年学期", "课程编号", "专业", "课程", "授课教师", "星期", "时间段"
+                        "学年学期", "课程编号", "专业", "课程", "授课教师", "时间段","类型","星期"
                 }
         ));
         jtb1.getColumnModel().getColumn(0).setPreferredWidth(161);
@@ -223,6 +223,8 @@ public class ClientStuCourseFrame extends JFrame implements ActionListener {
         jtb1.getColumnModel().getColumn(4).setPreferredWidth(161);
         jtb1.getColumnModel().getColumn(5).setPreferredWidth(161);
         jtb1.getColumnModel().getColumn(6).setPreferredWidth(161);
+        jtb1.getColumnModel().getColumn(7).setPreferredWidth(161);
+
         scrollPane.setViewportView(jtb1);
         jtb1.setEnabled(false);
         scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
@@ -241,8 +243,8 @@ public class ClientStuCourseFrame extends JFrame implements ActionListener {
         jtb1.setAutoResizeMode(JTable.AUTO_RESIZE_SUBSEQUENT_COLUMNS);
         DefaultTableCellRenderer renderer = new DefaultTableCellRenderer();
         renderer.setOpaque(false);    //设置透明
-        String[] Names = {"学年学期", "课程编号", "专业", "课程", "授课教师", "星期", "时间段"};
-        for (int i = 0; i < 7; i++) {
+        String[] Names = {"学年学期", "课程编号", "专业", "课程", "授课教师", "时间段","类型","星期"};
+        for (int i = 0; i < 8; i++) {
             jtb1.getColumn(Names[i]).setCellRenderer(renderer);//单格渲染
             TableColumn column = jtb1.getTableHeader().getColumnModel().getColumn(i);
             column.setHeaderRenderer(renderer);//表头渲染
@@ -365,7 +367,7 @@ public class ClientStuCourseFrame extends JFrame implements ActionListener {
             } else {
                 //设置表格
                 Object[][] courseinformation = {};
-                Object[] courselist = {"学年学期", "课程编号", "专业", "课程", "授课教师", "星期", "时间段"};
+                Object[] courselist = {"学年学期", "课程编号", "专业", "课程", "授课教师", "时间段","类型","星期"};
                 DefaultTableModel model;
                 model = new DefaultTableModel(courseinformation, courselist);
                 Message mes = new Message();
@@ -377,9 +379,9 @@ public class ClientStuCourseFrame extends JFrame implements ActionListener {
                 System.out.println(rec.getContent());
                 Vector<String> allCourseContents = rec.getContent();
                 System.out.println(allCourseContents.size());
-                Object sigRow[] = new String[7];
+                Object sigRow[] = new String[8];
                 for (int i = 0; i < allCourseContents.size(); ) {
-                    for (int j = 0; j < 7; j++) {
+                    for (int j = 0; j < 8; j++) {
                         sigRow[j] = allCourseContents.get(i);
                         i++;
                     }
@@ -395,8 +397,8 @@ public class ClientStuCourseFrame extends JFrame implements ActionListener {
                 jtb1.setAutoResizeMode(JTable.AUTO_RESIZE_SUBSEQUENT_COLUMNS);
                 DefaultTableCellRenderer renderer = new DefaultTableCellRenderer();
                 renderer.setOpaque(false);    //设置透明
-                String[] Names = {"学年学期", "课程编号", "专业", "课程", "授课教师", "星期", "时间段"};
-                for (int i = 0; i < 7; i++) {
+                String[] Names = {"学年学期", "课程编号", "专业", "课程", "授课教师", "时间段","类型","星期"};
+                for (int i = 0; i < 8; i++) {
                     jtb1.getColumn(Names[i]).setCellRenderer(renderer);//单格渲染
                     TableColumn column = jtb1.getTableHeader().getColumnModel().getColumn(i);
                     column.setHeaderRenderer(renderer);//表头渲染
