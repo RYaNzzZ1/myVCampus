@@ -104,7 +104,7 @@ public class Schedule extends JFrame {
             System.out.println(date);
             System.out.println("--------------------------------------");
             if ((period < 5) && (date < 7))
-                ak[period][date] = "<html>" + allCourseContents.get(8 * i + 3) + "<br>" + "1-16周" + p + "<br>" + allCourseContents.get(8 * i + 4) + "</html>";
+                ak[period][date] = "<html>" + allCourseContents.get(8 * i + 3) + "<br>" + "1-16周 " + p + "<br>" + allCourseContents.get(8 * i + 4) + "</html>";
         }
 
         //生成表格
