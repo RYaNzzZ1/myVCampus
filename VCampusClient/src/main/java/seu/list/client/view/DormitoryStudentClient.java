@@ -146,7 +146,7 @@ public class DormitoryStudentClient extends JFrame {
         ExchangeLabel_5 = new JLabel("");
         ExchangeLabel_5.setFont(new Font("微软雅黑", Font.BOLD, 24));
         ExchangeLabel_5.setForeground(Color.white);
-        ExchangeLabel_5.setBounds(575, 292, 130, 25);
+        ExchangeLabel_5.setBounds(575, 292, 220, 25);
         add(ExchangeLabel_5);
         ExchangeLabel_5.setOpaque(false);
         ExchangeLabel_5.setBorder(new EmptyBorder(0, 0, 0, 0));
@@ -154,7 +154,7 @@ public class DormitoryStudentClient extends JFrame {
         MaintainLabel_6 = new JLabel("");
         MaintainLabel_6.setFont(new Font("微软雅黑", Font.BOLD, 24));
         MaintainLabel_6.setForeground(Color.white);
-        MaintainLabel_6.setBounds(575, 351, 130, 25);
+        MaintainLabel_6.setBounds(575, 351, 220, 25);
         add(MaintainLabel_6);
         MaintainLabel_6.setOpaque(false);
         MaintainLabel_6.setBorder(new EmptyBorder(0, 0, 0, 0));
