@@ -477,7 +477,8 @@ public class ClientStuCourseFrame extends JFrame implements ActionListener {
 
             OK.addActionListener(event ->
             {
-                if (!Objects.equals(jtf2.getText(), "")) {
+                String cid = jtf2.getText();
+                if (cid.matches("^[A-Z]{2}+[0-9]{5}$")) {
                     Message clientReq = new Message();
                     Vector<String> content = new Vector<String>();
                     content.add(jtf2.getText());//课ID
@@ -504,7 +505,7 @@ public class ClientStuCourseFrame extends JFrame implements ActionListener {
 
                     display(rec);
                 } else {
-                    JOptionPane.showMessageDialog(null, "课程号不能为空", "错误", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "非法课程号", "错误", JOptionPane.ERROR_MESSAGE);
                     Message clientReq = new Message();//新建申请用于交换
                     User user = new User();
                     user.setId(userID);
