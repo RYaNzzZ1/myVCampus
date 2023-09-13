@@ -7,12 +7,15 @@ import seu.list.common.MessageType;
 import seu.list.common.ModuleType;
 import seu.list.common.Student;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.Dialog.ModalExclusionType;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -39,17 +42,26 @@ public class ClassStudentClient extends JFrame {
     private MainMenu Mainmenu = null;
 
     @SuppressWarnings("unchecked")
-    public ClassStudentClient(String id, String pwd, MainMenu mainmenu) {
+    public ClassStudentClient(String id, String pwd, MainMenu mainmenu) throws IOException {
         this.Mainmenu = mainmenu;
 
         //1.设置背景图片
-        JLabel backgroundImageLabel = new JLabel(new ImageIcon(getClass().getClassLoader().getResource("imgs/ClassStudentClient.png")));
+        JLabel backgroundImageLabel = new JLabel(new ImageIcon("VCampusClient/src/main/resources/ClassStudentClientnew.png"));
         Toolkit k = Toolkit.getDefaultToolkit();
         Dimension d = k.getScreenSize();
         setBounds(d.width / 2 - 441, d.height / 2 - 635 / 2, 882, 670);
         backgroundImageLabel.setBounds(0, 0, 882, 635);
         setResizable(false);
         setLayout(null);
+        //鼠标定位
+        /*  backgroundImageLabel.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    int x = e.getX();
+                    int y = e.getY();
+                    System.out.println("鼠标点击位置：X=" + x + ", Y=" + y);
+                }
+            });*/
 
 
         PWD = pwd;
@@ -90,7 +102,7 @@ public class ClassStudentClient extends JFrame {
         //提示标签
 
 
-        //信息输入框（显示框)
+        //信息输入框（显示框）
         name = new JTextField();  //姓名
         name.setText("null");
         name.setEditable(false);
@@ -220,8 +232,80 @@ public class ClassStudentClient extends JFrame {
             }
         }
         add(status);
+        JPanel touxiang=new JPanel();
+        touxiang.setBounds(144,104,363-144,409-104);
+        JLabel backadd = new JLabel();
+        backadd.setBounds(0,0,363-144,409-104+6);
+        touxiang.add(backadd);
+        touxiang.setLayout(null);
+
+
+        add(touxiang);
+        // 调整图像大小以适应窗口
+        int newWidth =  backadd.getWidth();
+        int newHeight =  backadd.getHeight();
+        // 监听窗口大小变化事件，调整图像大小
+        BufferedImage originalImage = ImageIO.read(new File("VCampusClient/src/main/resources/1.png"));
+        Image scaledImage = originalImage.getScaledInstance(newWidth, newHeight, Image.SCALE_SMOOTH);
+        final ImageIcon[][] imageIcon = {{new ImageIcon(scaledImage)}};
+        backadd.setIcon(imageIcon[0][0]);
+
+        touxiang.addComponentListener(new ComponentAdapter() {
+            @Override
+            public void componentResized(ComponentEvent e) {
+                // 获取窗口的新大小
+                int newWidth = backadd.getWidth();
+                int newHeight = backadd.getHeight();
+
+                // 调整图像大小以适应窗口
+                Image image = imageIcon[0][0].getImage();
+                Image newImage = image.getScaledInstance(newWidth, newHeight, Image.SCALE_SMOOTH);
+
+                // 创建一个新的 ImageIcon 并设置到 JLabel
+                imageIcon[0][0] = new ImageIcon(newImage);
+                backadd.setIcon(imageIcon[0][0]);
+            }
+        });
         add(backgroundImageLabel);//这行代码出现在按钮之前，TextField之后
 
+        // 创建一个按钮用于触发文件选择对话框
+        JButton chooseButton = new JButton("选择文件");
+        chooseButton.setBounds(50,166,113-50,345-166);
+        add(chooseButton);
+        chooseButton.setOpaque(false);
+        final String[] filePath = new String[1];
+        chooseButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JFileChooser fileChooser = new JFileChooser();
+
+                // 显示文件选择对话框
+                int result = fileChooser.showOpenDialog(null);
+
+                // 处理用户选择
+                if (result == JFileChooser.APPROVE_OPTION) {
+                   filePath[0] = fileChooser.getSelectedFile().getAbsolutePath();
+                    // 调整图像大小以适应窗口
+                    int newWidth =  backadd.getWidth();
+                    int newHeight =  backadd.getHeight();
+                    // 监听窗口大小变化事件，调整图像大小
+                    BufferedImage originalImage = null;
+                    try {
+                        originalImage = ImageIO.read(new File(filePath[0]));
+                    } catch (IOException ex) {
+                        throw new RuntimeException(ex);
+                    }
+                    Image scaledImage = originalImage.getScaledInstance(newWidth, newHeight, Image.SCALE_SMOOTH);
+                    imageIcon[0] = new ImageIcon[]{new ImageIcon(scaledImage)};
+                    backadd.setIcon(imageIcon[0][0]);
+                }
+
+
+            }
+        });
+        System.out.println(filePath);
+
+        //
 
         //修改按钮
         final JButton modifybutton = new JButton("修改");
@@ -245,7 +329,7 @@ public class ClassStudentClient extends JFrame {
                 tem.setVisible(true);
                 setVisible(false);
                 //绘制背景图片
-                JLabel backgroundImageLabel = new JLabel(new ImageIcon(getClass().getClassLoader().getResource("imgs/MotifyStudent.jpg")));
+                JLabel backgroundImageLabel = new JLabel(new ImageIcon("VCampusClient/src/main/resources/MotifyStudent.JPG"));
                 Toolkit k = Toolkit.getDefaultToolkit();
                 Dimension d = k.getScreenSize();
                 tem.setBounds(d.width / 2 - 861 / 2, d.height / 2 - 631 / 2, 861, 631 + 25);
@@ -329,7 +413,7 @@ public class ClassStudentClient extends JFrame {
                     } else {
 
                         if (phone1.getText().length() != 11) {
-                            JOptionPane.showMessageDialog(null, "请正确填写电话号码（11位)！", "提示", JOptionPane.WARNING_MESSAGE);
+                            JOptionPane.showMessageDialog(null, "请正确填写电话号码（11位）！", "提示", JOptionPane.WARNING_MESSAGE);
                         } else {
                             //保存当前的所有信息
                             Student temp = new Student();
