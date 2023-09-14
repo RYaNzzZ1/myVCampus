@@ -19,6 +19,7 @@ import java.awt.event.ComponentEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URISyntaxException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -58,16 +59,6 @@ public class ClassStudentClient extends JFrame {
         backgroundImageLabel.setBounds(0, 0, 882, 635);
         setResizable(false);
         setLayout(null);
-        //鼠标定位
-        /*  backgroundImageLabel.addMouseListener(new MouseAdapter() {
-                @Override
-                public void mouseClicked(MouseEvent e) {
-                    int x = e.getX();
-                    int y = e.getY();
-                    System.out.println("鼠标点击位置：X=" + x + ", Y=" + y);
-                }
-            });*/
-
 
         PWD = pwd;
         ID = id;
@@ -240,17 +231,19 @@ public class ClassStudentClient extends JFrame {
         JPanel touxiang=new JPanel();
         touxiang.setBounds(144,104,363-144,409-104);
         JLabel backadd = new JLabel();
-        backadd.setBounds(0,0,363-144,409-104+6);
+        backadd.setBounds(0, 0, 363 - 144, 409 - 104 + 6);
         touxiang.add(backadd);
         touxiang.setLayout(null);
 
 
         add(touxiang);
         // 调整图像大小以适应窗口
-        int newWidth =  backadd.getWidth();
-        int newHeight =  backadd.getHeight();
+        int newWidth = backadd.getWidth();
+        int newHeight = backadd.getHeight();
         // 监听窗口大小变化事件，调整图像大小
-        BufferedImage originalImage = ImageIO.read(new File(getClass().getClassLoader().getResource("imgs/1.png").toURI()));
+        InputStream picStream = getClass().getClassLoader().getResourceAsStream("imgs/1.png");
+        BufferedImage originalImage = ImageIO.read(picStream);
+        //BufferedImage originalImage = ImageIO.read(new File(getClass().getClassLoader().getResourceAsStream("imgs/1.png"))));
         Image scaledImage = originalImage.getScaledInstance(newWidth, newHeight, Image.SCALE_SMOOTH);
         final ImageIcon[][] imageIcon = {{new ImageIcon(scaledImage)}};
         backadd.setIcon(imageIcon[0][0]);

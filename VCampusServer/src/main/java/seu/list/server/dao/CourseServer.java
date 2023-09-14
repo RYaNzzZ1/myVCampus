@@ -134,6 +134,7 @@ public class CourseServer {
                 Vector<String> allCourseContent = new Vector<>();
                 List<Course> allCourse = this.getAllCourse();
                 for (Course course : allCourse) {
+                    System.out.println("课程：" + course);
                     sigCourseContent = course.getContent();
                     for (int i = 0; i < 8; i++) {
                         allCourseContent.add(sigCourseContent.get(i));
@@ -202,7 +203,11 @@ public class CourseServer {
     public List<Course> getAllCourse() {
         // TODO Auto-generated method stub
         String sql = "select * from tb_Class";
-        return new SqlHelper().sqlCourseQuery(sql, new String[]{});
+        List<Course> courses = new SqlHelper().sqlCourseQuery(sql, new String[]{});
+        for (Course cours : courses) {
+            System.out.println("getAllCourse:" + cours);
+        }
+        return courses;
     }
 
 

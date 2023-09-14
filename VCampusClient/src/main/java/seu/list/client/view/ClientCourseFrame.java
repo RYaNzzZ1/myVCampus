@@ -19,8 +19,6 @@ import java.sql.SQLException;
 import java.util.Vector;
 
 public class ClientCourseFrame extends JFrame implements ActionListener {
-
-
     final int WIDTH = 1280;
     final int HEIGHT = 720;
     JFrame jFrame = new JFrame();
@@ -45,7 +43,6 @@ public class ClientCourseFrame extends JFrame implements ActionListener {
         this.socket = socket;
         Client client = new Client(this.socket);
 
-
         //绘制背景图片
         JLabel backgroundImageLabel = new JLabel(new ImageIcon(getClass().getClassLoader().getResource("imgs/ClientCourseFrame.png")));
         Toolkit k = Toolkit.getDefaultToolkit();
@@ -55,17 +52,7 @@ public class ClientCourseFrame extends JFrame implements ActionListener {
         jFrame.setSize(1280, 755);
         jFrame.setResizable(false);
         jFrame.setLayout(null);
-        //2.绘制退出按钮
-        //得到鼠标的坐标（用于推算对话框应该摆放的坐标）
-    /* backgroundImageLabel.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-				int x = e.getX();
-				int y = e.getY();
-				System.out.println("鼠标点击位置：X=" + x + ", Y=" + y);
-			}
-        });
-*/
+
         //下拉拉列表
         String[] seOp = {"全部", "课程号"};
 
@@ -85,7 +72,7 @@ public class ClientCourseFrame extends JFrame implements ActionListener {
 
 
         Object[][] courseinformation = {};
-        Object[] courselist = {"学年学期", "课程编号", "专业", "课程", "授课教师","时间段","类型","星期"};
+        Object[] courselist = {"学年学期", "课程编号", "专业", "课程", "授课教师", "时间段", "类型", "星期"};
         DefaultTableModel model;
         model = new DefaultTableModel(courseinformation, courselist);
 
@@ -95,7 +82,7 @@ public class ClientCourseFrame extends JFrame implements ActionListener {
         Message rec = client.sendRequestToServer(clientReq);
         Vector<String> allCourseContents = rec.getContent();
 
-        Object sigRow[] = new String[8];
+        Object[] sigRow = new String[8];
         for (int i = 0; i < allCourseContents.size(); ) {
             for (int j = 0; j < 8; ) {
                 sigRow[j++] = allCourseContents.get(i++);
@@ -125,7 +112,7 @@ public class ClientCourseFrame extends JFrame implements ActionListener {
         jtb1.setAutoResizeMode(JTable.AUTO_RESIZE_SUBSEQUENT_COLUMNS);
         DefaultTableCellRenderer renderer = new DefaultTableCellRenderer();
         renderer.setOpaque(false);    //设置透明
-        String[] Names = {"学年学期", "课程编号", "专业", "课程", "授课教师", "时间段","类型","星期"};
+        String[] Names = {"学年学期", "课程编号", "专业", "课程", "授课教师", "时间段", "类型", "星期"};
         for (int i = 0; i < 8; i++) {
             jtb1.getColumn(Names[i]).setCellRenderer(renderer);//单格渲染
             TableColumn column = jtb1.getTableHeader().getColumnModel().getColumn(i);
@@ -134,7 +121,7 @@ public class ClientCourseFrame extends JFrame implements ActionListener {
         jtb1.setOpaque(false);
         jtb1.getTableHeader().setOpaque(false);
         jtb1.getTableHeader().setBorder(BorderFactory.createBevelBorder(0));
-        scrollPane.getVerticalScrollBar().setOpaque(false);//滚动条设置透明
+        scrollPane.getVerticalScrollBar().setOpaque(false);
         scrollPane.setOpaque(false);
         scrollPane.getViewport().setOpaque(false);
         scrollPane.setColumnHeaderView(jtb1.getTableHeader());
@@ -180,7 +167,7 @@ public class ClientCourseFrame extends JFrame implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         Client client = new Client(this.socket);
-        if (e.getActionCommand() == "search") {
+        if (e.getActionCommand().equals("search")) {
             if (jcb.getSelectedItem().equals("全部")) {
                 Message clientReq = new Message();
                 clientReq.setModuleType(ModuleType.Course);
@@ -199,7 +186,7 @@ public class ClientCourseFrame extends JFrame implements ActionListener {
                 jtb1.setModel(new DefaultTableModel(
                         allCourseTable,
                         new String[]{
-                                "学年学期", "课程编号", "专业", "课程", "授课教师", "时间段","类型","星期"
+                                "学年学期", "课程编号", "专业", "课程", "授课教师", "时间段", "类型", "星期"
                         }
                 ));
                 jtb1.getColumnModel().getColumn(0).setPreferredWidth(151);
@@ -228,7 +215,7 @@ public class ClientCourseFrame extends JFrame implements ActionListener {
                 jtb1.setAutoResizeMode(JTable.AUTO_RESIZE_SUBSEQUENT_COLUMNS);
                 DefaultTableCellRenderer renderer = new DefaultTableCellRenderer();
                 renderer.setOpaque(false);    //设置透明
-                String[] Names = {"学年学期", "课程编号", "专业", "课程", "授课教师", "时间段","类型","星期"};
+                String[] Names = {"学年学期", "课程编号", "专业", "课程", "授课教师", "时间段", "类型", "星期"};
                 for (int i = 0; i < 8; i++) {
                     jtb1.getColumn(Names[i]).setCellRenderer(renderer);//单格渲染
                     TableColumn column = jtb1.getTableHeader().getColumnModel().getColumn(i);
@@ -267,7 +254,7 @@ public class ClientCourseFrame extends JFrame implements ActionListener {
                     jtb1.setModel(new DefaultTableModel(
                             allCourseTable,
                             new String[]{
-                                    "学年学期", "课程编号", "专业", "课程", "授课教师", "时间段","类型","星期"
+                                    "学年学期", "课程编号", "专业", "课程", "授课教师", "时间段", "类型", "星期"
                             }
                     ));
                     jtb1.getColumnModel().getColumn(0).setPreferredWidth(151);
@@ -295,7 +282,7 @@ public class ClientCourseFrame extends JFrame implements ActionListener {
                     jtb1.setAutoResizeMode(JTable.AUTO_RESIZE_SUBSEQUENT_COLUMNS);
                     DefaultTableCellRenderer renderer = new DefaultTableCellRenderer();
                     renderer.setOpaque(false);    //设置透明
-                    String[] Names = {"学年学期", "课程编号", "专业", "课程", "授课教师", "时间段","类型","星期"};
+                    String[] Names = {"学年学期", "课程编号", "专业", "课程", "授课教师", "时间段", "类型", "星期"};
                     for (int i = 0; i < 8; i++) {
                         jtb1.getColumn(Names[i]).setCellRenderer(renderer);//单格渲染
                         TableColumn column = jtb1.getTableHeader().getColumnModel().getColumn(i);
@@ -315,11 +302,11 @@ public class ClientCourseFrame extends JFrame implements ActionListener {
 
             }
 
-        } else if (e.getActionCommand() == "add") {
+        } else if (e.getActionCommand().equals("add")) {
             CourseInfor courseInfor = new CourseInfor(userID, this.socket, this);
             jFrame.setVisible(false);
 
-        } else if (e.getActionCommand() == "delete") {
+        } else if (e.getActionCommand().equals("delete")) {
             //删除课程增加弹窗
             //绘制背景图片
             //jFrame.setVisible(false);
@@ -333,18 +320,6 @@ public class ClientCourseFrame extends JFrame implements ActionListener {
             tem.setLayout(null);
             tem.setVisible(true);
 
-
-            //2.绘制退出按钮
-            //得到鼠标的坐标（用于推算对话框应该摆放的坐标）
-   /*  backgroundImageLabel.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-				int x = e.getX();
-				int y = e.getY();
-				System.out.println("鼠标点击位置：X=" + x + ", Y=" + y);
-			}
-        });
-*/
             JTextField jtf = new JTextField();
             jtf.setText("");
             jtf.setBounds(263, 134, 620 - 263, 186 - 141);
@@ -363,13 +338,11 @@ public class ClientCourseFrame extends JFrame implements ActionListener {
             OK.setOpaque(false);
             Cancel.setOpaque(false);
 
-            Cancel.addActionListener(event ->
-            {
+            Cancel.addActionListener(event -> {
                 jFrame.setVisible(true);
                 tem.dispose();
             });
-            OK.addActionListener(event ->
-            {
+            OK.addActionListener(event -> {
                 Message clientReq = new Message();
                 clientReq.setModuleType(ModuleType.Course);
                 clientReq.setMessageType("REQ_REMOVE_LESSON");
@@ -395,7 +368,7 @@ public class ClientCourseFrame extends JFrame implements ActionListener {
                     jtb1.setModel(new DefaultTableModel(
                             allCourseTable,
                             new String[]{
-                                    "学年学期", "课程编号", "专业", "课程", "授课教师", "时间段","类型","星期"
+                                    "学年学期", "课程编号", "专业", "课程", "授课教师", "时间段", "类型", "星期"
                             }
                     ));
                     jtb1.getColumnModel().getColumn(0).setPreferredWidth(151);
@@ -424,7 +397,7 @@ public class ClientCourseFrame extends JFrame implements ActionListener {
                     jtb1.setAutoResizeMode(JTable.AUTO_RESIZE_SUBSEQUENT_COLUMNS);
                     DefaultTableCellRenderer renderer = new DefaultTableCellRenderer();
                     renderer.setOpaque(false);    //设置透明
-                    String[] Names = {"学年学期", "课程编号", "专业", "课程", "授课教师", "时间段","类型","星期"};
+                    String[] Names = {"学年学期", "课程编号", "专业", "课程", "授课教师", "时间段", "类型", "星期"};
                     for (int i = 0; i < 8; i++) {
                         jtb1.getColumn(Names[i]).setCellRenderer(renderer);//单格渲染
                         TableColumn column = jtb1.getTableHeader().getColumnModel().getColumn(i);
